@@ -66,7 +66,7 @@ public class Schedule extends Model {
         this.food = food;
     }
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="start_at", length=19)
+    @Column(name="start_at")
     public Date getStartAt() {
         return this.startAt;
     }
@@ -75,7 +75,7 @@ public class Schedule extends Model {
         this.startAt = startAt;
     }
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="end_at", length=19)
+    @Column(name="end_at")
     public Date getEndAt() {
         return this.endAt;
     }

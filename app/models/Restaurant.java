@@ -96,7 +96,7 @@ public class Restaurant extends Model {
         this.rankingVote = rankingVote;
     }
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="open_at", length=19)
+    @Column(name="open_at")
     public Date getOpenAt() {
         return this.openAt;
     }
@@ -105,7 +105,7 @@ public class Restaurant extends Model {
         this.openAt = openAt;
     }
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="delivery_at", nullable=false, length=19)
+    @Column(name="delivery_at", nullable=false)
     public Date getDeliveryAt() {
         return this.deliveryAt;
     }

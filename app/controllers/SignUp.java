@@ -3,6 +3,7 @@ package controllers;
 import models.Role;
 import models.User;
 import models.Usergroup;
+import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -60,17 +61,19 @@ public class SignUp extends Controller {
 		 * */
 		
 		if (filledForm.hasErrors()) {
+			Logger.error(filledForm.errors().toString());
+			
 			return badRequest(form.render(filledForm));
 		} else {
 			User created = filledForm.get();
 			Usergroup ug = new Usergroup();
 			ug.setName("testusergroup");
-			created.setUsergroup(ug);
-			Role role = new Role();
-			role.setName("testrole");
-			created.setRole(role);
+			//created.setUsergroup(ug);
+//			Role role = new Role();
+//			role.setName("testrole");
+			//created.setRole(role);
 			created.save();
-			return ok();
+			return redirect(routes.Application.index());
 		}
 		
 	}

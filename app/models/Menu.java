@@ -50,7 +50,7 @@ public class Menu extends Model {
         this.usergroup = usergroup;
     }
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="created_at", length=19)
+    @Column(name="created_at")
     public Date getCreatedAt() {
         return this.createdAt;
     }
@@ -68,7 +68,7 @@ public class Menu extends Model {
         this.deal = deal;
     }
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="closed_at", length=19)
+    @Column(name="closed_at")
     public Date getClosedAt() {
         return this.closedAt;
     }

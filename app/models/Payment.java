@@ -56,7 +56,7 @@ public class Payment extends Model {
 		this.usergroup = usergroup;
 	}
 
-	@Column(name = "amount", nullable = false, precision = 22, scale = 0)
+	@Column(name = "amount", nullable = false)
 	public double getAmount() {
 		return this.amount;
 	}
@@ -66,7 +66,7 @@ public class Payment extends Model {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_at", nullable = false, length = 19)
+	@Column(name = "created_at", nullable = false)
 	public Date getCreatedAt() {
 		return this.createdAt;
 	}

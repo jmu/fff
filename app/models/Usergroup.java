@@ -108,7 +108,7 @@ public class Usergroup extends Model {
 		this.bonusOn = bonusOn;
 	}
 
-	@Column(name = "bonus_pay_ratio", precision = 22, scale = 0)
+	@Column(name = "bonus_pay_ratio")
 	public Double getBonusPayRatio() {
 		return this.bonusPayRatio;
 	}
@@ -117,7 +117,7 @@ public class Usergroup extends Model {
 		this.bonusPayRatio = bonusPayRatio;
 	}
 
-	@Column(name = "bonus_order_ratio", precision = 22, scale = 0)
+	@Column(name = "bonus_order_ratio")
 	public Double getBonusOrderRatio() {
 		return this.bonusOrderRatio;
 	}
@@ -126,7 +126,7 @@ public class Usergroup extends Model {
 		this.bonusOrderRatio = bonusOrderRatio;
 	}
 
-	@Column(name = "bonus_manage_ratio", precision = 22, scale = 0)
+	@Column(name = "bonus_manage_ratio")
 	public Double getBonusManageRatio() {
 		return this.bonusManageRatio;
 	}
@@ -135,7 +135,7 @@ public class Usergroup extends Model {
 		this.bonusManageRatio = bonusManageRatio;
 	}
 
-	@Column(name = "bonus_carry_ratio", precision = 22, scale = 0)
+	@Column(name = "bonus_carry_ratio")
 	public Double getBonusCarryRatio() {
 		return this.bonusCarryRatio;
 	}

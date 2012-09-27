@@ -68,7 +68,7 @@ public class Food extends Model {
         this.name = name;
     }
     
-    @Column(name="price", nullable=false, precision=22, scale=0)
+    @Column(name="price", nullable=false)
     public double getPrice() {
         return this.price;
     }

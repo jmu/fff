@@ -14,5 +14,8 @@ GET     /signup                     controllers.SignUp.blank()
 POST    /signup                     controllers.SignUp.submit()
 
 POST    /login                      controllers.Application.authenticate()
-
+GET     /login                      controllers.Application.login()
+GET     /logout                    controllers.Application.logout()
 GET     /main                       controllers.Projects.index()
+
+GET     /admin/restaurant/list      controllers.admin.Restaurant.list()

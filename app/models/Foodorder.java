@@ -84,7 +84,7 @@ public class Foodorder extends Model {
         this.quantity = quantity;
     }
     
-    @Column(name="discount", precision=22, scale=0)
+    @Column(name="discount")
     public Double getDiscount() {
         return this.discount;
     }
@@ -93,7 +93,7 @@ public class Foodorder extends Model {
         this.discount = discount;
     }
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="order_at", length=19)
+    @Column(name="order_at")
     public Date getOrderAt() {
         return this.orderAt;
     }

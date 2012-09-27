@@ -12,7 +12,7 @@ create table address (
 ;
 
 create table comment (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   user_id                   bigint,
   food_id                   bigint,
   title                     varchar(255),
@@ -21,170 +21,143 @@ create table comment (
 ;
 
 create table food (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   foodtype_id               bigint,
   restaurant_id             bigint,
   name                      varchar(100) not null,
-  price                     double(22) not null,
-  is_available              boolean,
+  price                     double not null,
+  is_available              tinyint(1) default 0,
   ranking                   float(12) not null,
   ranking_vote              bigint,
   constraint pk_food primary key (id))
 ;
 
 create table foodorder (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   user_id                   bigint,
   menu_id                   bigint,
   ordertype_id              bigint,
   food_id                   bigint,
   quantity                  bigint not null,
-  discount                  double(22),
-  order_at                  timestamp(19),
-  deal                      boolean,
+  discount                  double,
+  order_at                  datetime,
+  deal                      tinyint(1) default 0,
   comments                  varchar(255),
   constraint pk_foodorder primary key (id))
 ;
 
 create table foodtype (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   name                      varchar(100) not null,
   constraint pk_foodtype primary key (id))
 ;
 
 create table menu (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   usergroup_id              bigint,
-  created_at                timestamp(19),
-  deal                      boolean,
-  closed_at                 timestamp(19),
-  is_available              boolean,
+  created_at                datetime,
+  deal                      tinyint(1) default 0,
+  closed_at                 datetime,
+  is_available              tinyint(1) default 0,
   constraint pk_menu primary key (id))
 ;
 
 create table menu_user (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   user_id                   bigint,
   menu_id                   bigint,
   constraint pk_menu_user primary key (id))
 ;
 
 create table ordertype (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   name                      varchar(255),
   constraint pk_ordertype primary key (id))
 ;
 
 create table payment (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   user_id                   bigint,
   usergroup_id              bigint,
-  amount                    double(22) not null,
-  created_at                timestamp(19) not null,
+  amount                    double not null,
+  created_at                datetime not null,
   description               varchar(255),
   constraint pk_payment primary key (id))
 ;
 
 create table restaurant (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   name                      varchar(100) not null,
   phone_number              varchar(50),
   address                   varchar(255),
   manager                   varchar(50),
   ranking                   float(12),
   ranking_vote              bigint,
-  open_at                   timestamp(19),
-  delivery_at               timestamp(19) not null,
-  is_available              boolean,
+  open_at                   datetime,
+  delivery_at               datetime not null,
+  is_available              tinyint(1) default 0,
   constraint pk_restaurant primary key (id))
 ;
 
 create table role (
-  id                        bigint not null,
-  name                      varchar(20),
-  description               varchar(64),
+  id                        bigint auto_increment not null,
+  name                      varchar(50),
+  description               varchar(255),
   constraint pk_role primary key (id))
 ;
 
 create table schedule (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   user_id                   bigint,
   ordertype_id              bigint,
   food_id                   bigint,
-  start_at                  timestamp(19),
-  end_at                    timestamp(19),
+  start_at                  datetime,
+  end_at                    datetime,
   calendar_type             bigint,
   cycle_day                 bigint,
   cycle_times               bigint,
-  is_available              boolean,
+  is_available              tinyint(1) default 0,
   constraint pk_schedule primary key (id))
 ;
 
 create table user (
-  id                        bigint not null,
-  version                   integer not null,
+  id                        bigint auto_increment not null,
+  user_name                 varchar(255),
+  full_name                 varchar(255),
+  password                  varchar(255),
+  email                     varchar(255),
+  phone_number              varchar(255),
+  money                     double,
+  bonus                     bigint,
+  account_expired           tinyint(1) default 0,
+  account_locked            tinyint(1) default 0,
+  account_enabled           tinyint(1) default 0,
+  credentials_expired       tinyint(1) default 0,
+  reg_at                    datetime,
+  last_login                datetime,
+  ip                        varchar(255),
+  mail_reminder_on          tinyint(1) default 0,
   usergroup_id              bigint,
   role_id                   bigint,
-  user_name                 varchar(50) not null,
-  full_name                 varchar(50),
-  password                  varchar(50) not null,
-  email                     varchar(100) not null,
-  phone_number              varchar(50),
-  money                     double(22),
-  bonus                     bigint,
-  account_expired           boolean,
-  account_locked            boolean,
-  account_enabled           boolean,
-  credentials_expired       boolean,
-  reg_at                    timestamp(19),
-  last_login                timestamp(19),
-  ip                        varchar(20),
-  mail_reminder_on          boolean,
   constraint pk_user primary key (id))
 ;
 
 create table usergroup (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   name                      varchar(100),
-  im_on                     boolean,
-  open_reg                  boolean,
+  im_on                     tinyint(1) default 0,
+  open_reg                  tinyint(1) default 0,
   lucky_rule                bigint,
-  mail_reminder_on          boolean,
-  menu_auto_close           boolean,
-  bonus_on                  boolean,
-  bonus_pay_ratio           double(22),
-  bonus_order_ratio         double(22),
-  bonus_manage_ratio        double(22),
-  bonus_carry_ratio         double(22),
+  mail_reminder_on          tinyint(1) default 0,
+  menu_auto_close           tinyint(1) default 0,
+  bonus_on                  tinyint(1) default 0,
+  bonus_pay_ratio           double,
+  bonus_order_ratio         double,
+  bonus_manage_ratio        double,
+  bonus_carry_ratio         double,
   description               varchar(1000),
   constraint pk_usergroup primary key (id))
 ;
-
-create sequence comment_seq;
-
-create sequence food_seq;
-
-create sequence foodorder_seq;
-
-create sequence foodtype_seq;
-
-create sequence menu_seq;
-
-create sequence menu_user_seq;
-
-create sequence ordertype_seq;
-
-create sequence payment_seq;
-
-create sequence restaurant_seq;
-
-create sequence role_seq;
-
-create sequence schedule_seq;
-
-create sequence user_seq;
-
-create sequence usergroup_seq;
 
 alter table comment add constraint fk_comment_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_comment_user_1 on comment (user_id);
@@ -227,61 +200,35 @@ create index ix_user_role_18 on user (role_id);
 
 # --- !Downs
 
-SET REFERENTIAL_INTEGRITY FALSE;
+SET FOREIGN_KEY_CHECKS=0;
 
-drop table if exists address;
+drop table address;
 
-drop table if exists comment;
+drop table comment;
 
-drop table if exists food;
+drop table food;
 
-drop table if exists foodorder;
+drop table foodorder;
 
-drop table if exists foodtype;
+drop table foodtype;
 
-drop table if exists menu;
+drop table menu;
 
-drop table if exists menu_user;
+drop table menu_user;
 
-drop table if exists ordertype;
+drop table ordertype;
 
-drop table if exists payment;
+drop table payment;
 
-drop table if exists restaurant;
+drop table restaurant;
 
-drop table if exists role;
+drop table role;
 
-drop table if exists schedule;
+drop table schedule;
 
-drop table if exists user;
+drop table user;
 
-drop table if exists usergroup;
+drop table usergroup;
 
-SET REFERENTIAL_INTEGRITY TRUE;
-
-drop sequence if exists comment_seq;
-
-drop sequence if exists food_seq;
-
-drop sequence if exists foodorder_seq;
-
-drop sequence if exists foodtype_seq;
-
-drop sequence if exists menu_seq;
-
-drop sequence if exists menu_user_seq;
-
-drop sequence if exists ordertype_seq;
-
-drop sequence if exists payment_seq;
-
-drop sequence if exists restaurant_seq;
-
-drop sequence if exists role_seq;
-
-drop sequence if exists schedule_seq;
-
-drop sequence if exists user_seq;
-
-drop sequence if exists usergroup_seq;
+SET FOREIGN_KEY_CHECKS=1;
 
