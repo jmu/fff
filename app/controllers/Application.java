@@ -10,7 +10,12 @@ import views.html.login;
 
 public class Application extends Controller {
 
+	public static final String USER_ID = "userid";
+	
 	public static Result index() {
+		if(session().containsKey(USER_ID)){
+			return redirect(routes.Projects.index());
+		}
 		return redirect(routes.Application.login());
 	}
 	
@@ -36,7 +41,7 @@ public class Application extends Controller {
 			Logger.error(loginForm.errors().toString());
 			return badRequest(login.render(loginForm));
 		} else {
-			session("userid", loginForm.get().email);
+			session(USER_ID, loginForm.get().email);
 			Logger.info(loginForm.get().email + " is Login.");
 			return redirect(routes.Projects.index());
 		}

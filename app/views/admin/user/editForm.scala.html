@@ -1,0 +1,32 @@
+@(id: Long, userForm: Form[User])
+
+@import helper._
+@import controllers.admin._
+@import views.html.admin._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@admin_main(Html("User"), nav = "admin", adminnav = "user", showBar = true) {
+    @form(routes.Users.delete(id), 'class -> "pull-right") {
+        <input type="submit" value="Delete this user" class="btn btn-danger">
+    }
+    @form(routes.Users.update(id), 'class -> "form-horizontal") {
+        <legend>Edit user</legend>
+        <fieldset>
+       		@inputText(userForm("userName"), '_label -> "User name")
+            @inputText(userForm("fullName"), '_label -> "Full Name")
+            @inputText(userForm("email"), '_label -> "Email")
+            @inputText(userForm("regAt"), '_label -> "RegAt")
+            @inputText(userForm("money"), '_label -> "Money")
+        
+        </fieldset>
+        
+        <div class="form-actions">
+            <input type="submit" value="Save this user" class="btn btn-primary"> or 
+            <a href="@routes.Users.list()" class="btn">Cancel</a> 
+        </div>
+        
+    }
+    
+    
+}

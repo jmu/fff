@@ -1,0 +1,151 @@
+@(currentPage: Page[User], currentSortBy: String, currentOrder: String, currentFilter: String)
+
+@import helper._
+@import helper.twitterBootstrap._
+@import controllers.admin._
+@import views.html.admin._
+
+@****************************************
+* Helper generating navigation links    *
+****************************************@
+@link(newPage:Int, newSortBy:String) = @{
+    
+    var sortBy = currentSortBy
+    var order = currentOrder
+    
+    if(newSortBy != null) {
+        sortBy = newSortBy
+        if(currentSortBy == newSortBy) {
+            if(currentOrder == "asc") {
+                order = "desc"
+            } else {
+                order = "asc"
+            }
+        } else {
+            order = "asc"
+        }
+    }
+    
+    // Generate the link
+    routes.Users.list(newPage, sortBy, order, currentFilter)
+    
+}
+
+@**********************************
+* Helper generating table headers *
+***********************************@
+@header(key:String, title:String) = {
+    <th class="@key.replace(".","_") header @if(currentSortBy == key) @{if(currentOrder == "asc") "headerSortDown" else "headerSortUp"}">
+        <a href="@link(0, key)">@title</a>
+    </th>
+}
+
+@admin_main(Html("User"), nav = "admin",adminnav = "user", showBar = true) {
+    
+    <!-- <h1 id="homeTitle">@Messages("users.list.title", currentPage.getTotalRowCount)</h1> -->
+
+    @if(flash.containsKey("success")) {
+        <div class="alert alert-success">
+            <button class="close" data-dismiss="alert" type="button">×</button>
+            <strong>Done!</strong> @flash.get("success")
+        </div>
+    } 
+
+    <div id="form-actions">
+        
+        <form class="form-inline" action="@link(0, "userName")" method="GET">
+            <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by user name...">
+            <input type="submit" id="searchsubmit" value="Filter by name" class="btn btn-primary">
+        
+        <a class="btn btn-success pull-right" id="add" href="@routes.Users.create()">Add a new user</a>
+        </form>
+    </div>
+    
+    @if(currentPage.getTotalRowCount == 0) {
+        
+        <div class="well">
+            <em>Nothing to display</em>
+        </div>
+        
+    } else {
+        
+        <table class="users table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                @header("userName", "User Name")
+                @header("fullName", "Full Name")
+                @header("email", "Email")
+                @header("regAt", "RegAt")
+                @header("money", "Money")
+                </tr>
+            </thead>
+            <tbody>
+
+                @for(user <- currentPage.getList) {
+                    <tr>
+                        <td><a href="@routes.Users.edit(user.id)">@user.userName</a></td>
+                        <td>
+                            @if(user.fullName == null) {
+                                <em>-</em>
+                            } else {
+                                @user.fullName
+                            }
+                        </td>
+                        <td>
+                            @if(user.email == null) {
+                                <em>-</em>
+                            } else {
+                                @user.email
+                            }
+                        </td>
+                        <td>
+                            @if(user.regAt == null) {
+                                <em>-</em>
+                            } else {
+                                @user.regAt.format("yyyy-MM-dd HH:mm:ss")
+                            }
+                        </td>
+                          <td>
+                            @if(user.money == null) {
+                                <em>-</em>
+                            } else {
+                                @user.money
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+        <div id="pagination" class="pagination pagination-right">
+            <ul>
+                @if(currentPage.hasPrev) {
+                    <li class="prev">
+                        <a href="@link(currentPage.getPageIndex - 1, null)">&larr; Previous</a>
+                    </li>
+                } else {
+                    <li class="prev disabled">
+                        <a>&larr; Previous</a>
+                    </li>
+                }
+                <li class="current">
+                    <a>Displaying @currentPage.getDisplayXtoYofZ(" to "," of ")</a>
+                </li>
+                @if(currentPage.hasNext) {
+                    <li class="next">
+                        <a href="@link(currentPage.getPageIndex + 1, null)">Next &rarr;</a>
+                    </li>
+                } else {
+                    <li class="next disabled">
+                        <a>Next &rarr;</a>
+                    </li>
+                }
+            </ul>
+        </div>
+        
+    }
+        
+}
+
+            

@@ -1,0 +1,37 @@
+@(id: Long, restaurantForm: Form[Restaurant])
+
+@import helper._
+@import controllers.admin._
+@import views.html.admin._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@admin_main(Html("Restaurant"), nav = "admin", adminnav = "restaurant", showBar = true) {
+    @form(routes.Restaurants.delete(id), 'class -> "pull-right") {
+        <input type="submit" value="Delete this restaurant" class="btn btn-danger">
+    }
+    @form(routes.Restaurants.update(id), 'class -> "form-horizontal") {
+        <legend>Edit restaurant</legend>
+        <fieldset>
+       		@inputText(restaurantForm("name"), '_label -> "Restaurant name")
+            @inputText(restaurantForm("phoneNumber"), '_label -> "phoneNumber")
+            @inputText(restaurantForm("address"), '_label -> "address")
+            @inputText(restaurantForm("manager"), '_label -> "Manager")
+            <div class="control-group">
+			<div class="controls">
+				<label class="checkbox"><input type="checkbox" name="isAvailable" @if(restaurantForm.get.isAvailable !=null && restaurantForm.get.isAvailable){checked}>
+					激活
+				</label>
+				</div>
+				</div>
+        </fieldset>
+        
+        <div class="form-actions">
+            <input type="submit" value="Save this restaurant" class="btn btn-primary"> or 
+            <a href="@routes.Restaurants.list()" class="btn">Cancel</a> 
+        </div>
+        
+    }
+    
+    
+}

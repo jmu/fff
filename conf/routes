@@ -18,4 +18,38 @@ GET     /login                      controllers.Application.login()
 GET     /logout                    controllers.Application.logout()
 GET     /main                       controllers.Projects.index()
 
-GET     /admin/restaurant/list      controllers.admin.Restaurant.list()
+GET     /admin/restaurants            controllers.admin.Restaurants.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")
+# Add restaurant
+GET     /restaurants/new              controllers.admin.Restaurants.create()
+POST    /restaurants                  controllers.admin.Restaurants.save()
+
+# Edit existing restaurant
+GET     /restaurants/:id              controllers.admin.Restaurants.edit(id:Long)
+POST    /restaurants/:id              controllers.admin.Restaurants.update(id:Long)
+
+# Delete a restaurant
+POST    /restaurants/:id/delete       controllers.admin.Restaurants.delete(id:Long)
+#--------------------
+GET     /admin/foods            controllers.admin.Foods.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")
+# Add restaurant
+GET     /foods/new              controllers.admin.Foods.create()
+POST    /foods                  controllers.admin.Foods.save()
+
+# Edit existing restaurant
+GET     /foods/:id              controllers.admin.Foods.edit(id:Long)
+POST    /foods/:id              controllers.admin.Foods.update(id:Long)
+
+# Delete a restaurant
+POST    /foods/:id/delete       controllers.admin.Foods.delete(id:Long)
+#--------------------
+GET     /admin/users            controllers.admin.Users.list(p:Int ?= 0, s ?= "userName", o ?= "asc", f ?= "")
+# Add restaurant
+GET     /users/new              controllers.admin.Users.create()
+POST    /users                  controllers.admin.Users.save()
+
+# Edit existing restaurant
+GET     /users/:id              controllers.admin.Users.edit(id:Long)
+POST    /users/:id              controllers.admin.Users.update(id:Long)
+
+# Delete a restaurant
+POST    /users/:id/delete       controllers.admin.Users.delete(id:Long)

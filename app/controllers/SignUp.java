@@ -1,6 +1,7 @@
 package controllers;
 
-import models.Role;
+import java.util.Date;
+
 import models.User;
 import models.Usergroup;
 import play.Logger;
@@ -68,10 +69,13 @@ public class SignUp extends Controller {
 			User created = filledForm.get();
 			Usergroup ug = new Usergroup();
 			ug.setName("testusergroup");
-			//created.setUsergroup(ug);
+			created.usergroup = ug;
 //			Role role = new Role();
 //			role.setName("testrole");
 			//created.setRole(role);
+			if(created.regAt == null){
+				created.regAt = new Date();
+			}
 			created.save();
 			return redirect(routes.Application.index());
 		}

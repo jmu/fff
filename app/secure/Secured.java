@@ -1,15 +1,16 @@
 package secure;
 
-import controllers.routes;
 import play.mvc.Http.Context;
 import play.mvc.Result;
 import play.mvc.Security;
+import controllers.Application;
+import controllers.routes;
 
 public class Secured extends Security.Authenticator {
     
     @Override
     public String getUsername(Context ctx) {
-        return ctx.session().get("userid");
+        return ctx.session().get(Application.USER_ID);
     }
     
     @Override

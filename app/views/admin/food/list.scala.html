@@ -1,0 +1,143 @@
+@(currentPage: Page[Food], currentSortBy: String, currentOrder: String, currentFilter: String)
+
+@import helper._
+@import helper.twitterBootstrap._
+@import controllers.admin._
+@import views.html.admin._
+
+@****************************************
+* Helper generating navigation links    *
+****************************************@
+@link(newPage:Int, newSortBy:String) = @{
+    
+    var sortBy = currentSortBy
+    var order = currentOrder
+    
+    if(newSortBy != null) {
+        sortBy = newSortBy
+        if(currentSortBy == newSortBy) {
+            if(currentOrder == "asc") {
+                order = "desc"
+            } else {
+                order = "asc"
+            }
+        } else {
+            order = "asc"
+        }
+    }
+    
+    // Generate the link
+    routes.Foods.list(newPage, sortBy, order, currentFilter)
+    
+}
+
+@**********************************
+* Helper generating table headers *
+***********************************@
+@header(key:String, title:String) = {
+    <th class="@key.replace(".","_") header @if(currentSortBy == key) @{if(currentOrder == "asc") "headerSortDown" else "headerSortUp"}">
+        <a href="@link(0, key)">@title</a>
+    </th>
+}
+
+@admin_main(Html("Food"), nav = "admin",adminnav = "food", showBar = true) {
+    
+    <!-- <h1 id="homeTitle">@Messages("foods.list.title", currentPage.getTotalRowCount)</h1> -->
+
+    @if(flash.containsKey("success")) {
+        <div class="alert alert-success">
+            <button class="close" data-dismiss="alert" type="button">×</button>
+            <strong>Done!</strong> @flash.get("success")
+        </div>
+    } 
+
+    <div id="form-actions">
+        
+        <form class="form-inline" action="@link(0, "name")" method="GET">
+            <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by food name...">
+            <input type="submit" id="searchsubmit" value="Filter by name" class="btn btn-primary">
+        
+        <a class="btn btn-success pull-right" id="add" href="@routes.Foods.create()">Add a new food</a>
+        </form>
+    </div>
+    
+    @if(currentPage.getTotalRowCount == 0) {
+        
+        <div class="well">
+            <em>Nothing to display</em>
+        </div>
+        
+    } else {
+        
+        <table class="foods table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                	@header("restaurant.name","Resturant")
+                    @header("name", "Food name")
+                    @header("price", "Price")
+                    @header("isAvailable", "Available")
+                </tr>
+            </thead>
+            <tbody>
+
+                @for(food <- currentPage.getList) {
+                    <tr>
+                    	<td>
+                    		  @if(food.restaurant.name == null) {
+                                <em>-</em>
+                            } else {
+                                <a href="@routes.Restaurants.edit(food.restaurant.id)">@food.restaurant.name</a>
+                            }
+                    	</td>
+                        <td><a href="@routes.Foods.edit(food.id)">@food.name</a></td>
+                        <td>
+                            @if(food.price == null) {
+                                <em>-</em>
+                            } else {
+                                @food.price
+                            }
+                        </td>
+                          <td>
+                            @if(food.isAvailable == null) {
+                                <em>-</em>
+                            } else {
+                                @food.isAvailable
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+        <div id="pagination" class="pagination pagination-right">
+            <ul>
+                @if(currentPage.hasPrev) {
+                    <li class="prev">
+                        <a href="@link(currentPage.getPageIndex - 1, null)">&larr; Previous</a>
+                    </li>
+                } else {
+                    <li class="prev disabled">
+                        <a>&larr; Previous</a>
+                    </li>
+                }
+                <li class="current">
+                    <a>Displaying @currentPage.getDisplayXtoYofZ(" to "," of ")</a>
+                </li>
+                @if(currentPage.hasNext) {
+                    <li class="next">
+                        <a href="@link(currentPage.getPageIndex + 1, null)">Next &rarr;</a>
+                    </li>
+                } else {
+                    <li class="next disabled">
+                        <a>Next &rarr;</a>
+                    </li>
+                }
+            </ul>
+        </div>
+        
+    }
+        
+}
+
+            

@@ -24,10 +24,10 @@ create table food (
   id                        bigint auto_increment not null,
   foodtype_id               bigint,
   restaurant_id             bigint,
-  name                      varchar(100) not null,
-  price                     double not null,
+  name                      varchar(255),
+  price                     double,
   is_available              tinyint(1) default 0,
-  ranking                   float(12) not null,
+  ranking                   float,
   ranking_vote              bigint,
   constraint pk_food primary key (id))
 ;
@@ -87,14 +87,14 @@ create table payment (
 
 create table restaurant (
   id                        bigint auto_increment not null,
-  name                      varchar(100) not null,
-  phone_number              varchar(50),
+  name                      varchar(255),
+  phone_number              varchar(255),
   address                   varchar(255),
-  manager                   varchar(50),
-  ranking                   float(12),
+  manager                   varchar(255),
+  ranking                   float,
   ranking_vote              bigint,
   open_at                   datetime,
-  delivery_at               datetime not null,
+  delivery_at               datetime,
   is_available              tinyint(1) default 0,
   constraint pk_restaurant primary key (id))
 ;

@@ -1,25 +1,26 @@
-@import helper._
-@import helper.twitterBootstrap._
+@(title: Html, nav: String = "", adminnav: String = "", showBar: Boolean = true)(content: Html)
 
+@import controllers.admin._
 
-@main(Html("Admin"), nav = "admin", showBar = true) {
-	<div class="container-fluid">
+@head(title, nav, showBar) {
+    <div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span3">
 				<div class="well sidebar-nav">
 					<ul class="nav nav-list">
-						<li class="nav-header">User Management</li>
-						<li class="active"><a href="">list</a></li>
+						<li class="nav-header">Admin Management</li>
+						<li class="@("active".when(adminnav == "user"))"><a href="@routes.Users.list()">User Management</a></li>
+						<li class="@("active".when(adminnav == "restaurant"))"><a href="@routes.Restaurants.list()">Restaurant Management</a></li>
+						<li class="@("active".when(adminnav == "food"))"><a href="@routes.Foods.list()">Food Management</a></li>
 						<li class="nav-header">Restaurant Management</li>
 						<li><a href=""></a></li>
 					</ul>
 				
 				</div>
 			</div>
-			<div class="span9">
+			<div class="span8">
 				<div class="content">
-					<h3>hello</h3>
-					<p>sdfdfsdf</p>
+					@content
 				</div>
 			</div>
 		</div>

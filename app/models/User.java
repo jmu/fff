@@ -2,7 +2,9 @@ package models;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.avaje.ebean.Page;
 
 import play.data.validation.Constraints.Email;
 import play.data.validation.Constraints.MinLength;
@@ -64,6 +68,9 @@ public class User extends Model {
 
 	public static Model.Finder<String, User> find = new Model.Finder<String, User>(
 			String.class, User.class);
+	
+	public static Model.Finder<Long, User> findById = new Model.Finder<Long, User>(
+			Long.class, User.class);
 
 	/**
 	 * Retrieve all users.
@@ -86,5 +93,20 @@ public class User extends Model {
             .eq("email", email)
             .eq("password", password)
             .findUnique();
+    }
+    
+	public static Page<User> page(int page, int pageSize, String sortBy,
+			String order, String filter) {
+		return findById.where().ilike("userName", "%" + filter + "%")
+				.orderBy(sortBy + " " + order)//.fetch("company")
+				.findPagingList(pageSize).getPage(page);
+	}
+    
+    public static Map<String,String> options() {
+        LinkedHashMap<String,String> options = new LinkedHashMap<String,String>();
+        for(User c: findById.where().eq("isAvailable", true).orderBy("userName").findList()) {
+            options.put(c.id.toString(), c.userName);
+        }
+        return options;
     }
 }
