@@ -13,10 +13,16 @@
     @form(routes.Foods.update(id), 'class -> "form-horizontal") {
         <legend>Edit food</legend>
         <fieldset>
-       	           @select(
+            @select(
                 foodForm("restaurant.id"), 
                 options(Restaurant.options), 
                 '_label -> "Restaurant", '_default -> "-- Choose a Restaurant --",
+                '_showConstraints -> false
+            )
+            @select(
+                foodForm("foodtype.id"), 
+                options(Foodtype.options), 
+                '_label -> "Foodtype", '_default -> "-- Choose a Food Type --",
                 '_showConstraints -> false
             )
             @inputText(foodForm("name"), '_label -> "Food name")

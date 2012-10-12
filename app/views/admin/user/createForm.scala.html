@@ -7,15 +7,32 @@
 @implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
 
 @admin_main(Html("User"), nav = "admin", adminnav = "user", showBar = true) {
+			 @if(userForm.hasGlobalErrors) { 
+                <p class="alert alert-error">
+                   <button class="close" data-dismiss="alert" type="button">×</button>
+                    @userForm.globalError.message
+                </p>
+            }
     @form(routes.Users.save(), 'class -> "form-horizontal") {
         <legend>Add a user</legend>
         <fieldset>
+           @select(
+                userForm("role.id"), 
+                options(Role.options), 
+                '_label -> "Role", '_default -> "-- Choose a Role --",
+                '_showConstraints -> false
+            )
             @inputText(userForm("userName"), '_label -> "User name")
             @inputText(userForm("fullName"), '_label -> "Full Name")
             @inputText(userForm("email"), '_label -> "Email")
-            @inputText(userForm("regAt"), '_label -> "RegAt")
-            @inputText(userForm("money"), '_label -> "Money")
-
+            @inputText(userForm("phoneNumber"), '_label -> "PhoneNumber")
+            @inputPassword(userForm("password"), '_label -> "Password")
+            <div class="control-group"> 
+                <label class="control-label" for="accountLocked">账户锁定</label>
+                <div class="controls">
+                    <input type="checkbox" name="accountLocked">
+                </div>
+            </div>
         </fieldset>
         
         <div class="form-actions">

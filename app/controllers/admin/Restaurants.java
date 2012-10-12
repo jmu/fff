@@ -13,10 +13,6 @@ public class Restaurants extends Controller {
 	public static Result GO_HOME = redirect(routes.Restaurants.list(0, "name",
 			"asc", ""));
 
-	// public static Result list() {
-	// return ok(list.render());
-	// }
-
 	public static Result list(int page, String sortBy, String order,
 			String filter) {
 		return ok(list.render(Restaurant.page(page, 10, sortBy, order, filter),
@@ -24,40 +20,44 @@ public class Restaurants extends Controller {
 	}
 
 	public static Result edit(Long id) {
-		Form<Restaurant> computerForm = form(Restaurant.class).fill(
+		Form<Restaurant> restaurantForm = form(Restaurant.class).fill(
 				Restaurant.find.byId(id));
-		return ok(editForm.render(id, computerForm));
+		return ok(editForm.render(id, restaurantForm));
 	}
 
 	public static Result update(Long id) {
-		Form<Restaurant> computerForm = form(Restaurant.class)
+		Form<Restaurant> restaurantForm = form(Restaurant.class)
 				.bindFromRequest();
-		if (computerForm.hasErrors()) {
-			return badRequest(editForm.render(id, computerForm));
+		if (restaurantForm.hasErrors()) {
+			return badRequest(editForm.render(id, restaurantForm));
 		}
-		computerForm.get().update(id);
-		flash("success", "Restaurant " + computerForm.get().name
+		Restaurant r = restaurantForm.get();
+		if (r.isAvailable == null) {
+			r.isAvailable = false;
+		}
+		restaurantForm.get().update(id);
+		flash("success", "Restaurant " + restaurantForm.get().name
 				+ " has been updated");
 		return GO_HOME;
 	}
 
 	public static Result create() {
-		Form<Restaurant> computerForm = form(Restaurant.class);
-		return ok(createForm.render(computerForm));
+		Form<Restaurant> restaurantForm = form(Restaurant.class);
+		return ok(createForm.render(restaurantForm));
 	}
 
 	public static Result save() {
-		Form<Restaurant> computerForm = form(Restaurant.class)
+		Form<Restaurant> restaurantForm = form(Restaurant.class)
 				.bindFromRequest();
-		if (computerForm.hasErrors()) {
-			return badRequest(createForm.render(computerForm));
+		if (restaurantForm.hasErrors()) {
+			return badRequest(createForm.render(restaurantForm));
 		}
-		Restaurant r = computerForm.get();
+		Restaurant r = restaurantForm.get();
 		if (r.isAvailable == null) {
 			r.isAvailable = false;
 		}
 		r.save();
-		flash("success", "Restaurant " + computerForm.get().name
+		flash("success", "Restaurant " + restaurantForm.get().name
 				+ " has been created");
 		return GO_HOME;
 	}

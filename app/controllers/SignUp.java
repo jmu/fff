@@ -68,7 +68,7 @@ public class SignUp extends Controller {
 		} else {
 			User created = filledForm.get();
 			Usergroup ug = new Usergroup();
-			ug.setName("testusergroup");
+			ug.name = "testusergroup";
 			created.usergroup = ug;
 //			Role role = new Role();
 //			role.setName("testrole");

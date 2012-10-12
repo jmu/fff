@@ -1,0 +1,25 @@
+@(menuForm: Form[Menu])
+
+@import helper._
+@import controllers.admin._
+@import views.html.admin._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@admin_main(Html("Menu"), nav = "admin", adminnav = "menu", showBar = true) {
+    @form(routes.Menus.save(), 'class -> "form-horizontal") {
+        <legend>Add a menu</legend>
+        <fieldset>
+            @inputText(menuForm("name"), '_label -> "Menu name")
+            @checkbox(menuForm("deal"), '_label -> "Deal")
+            @checkbox(menuForm("isAvailable"), '_label -> "isAvailable")
+        </fieldset>
+        
+        <div class="form-actions">
+            <input type="submit" value="Create this menu" class="btn btn-primary"> or 
+            <a href="@routes.Menus.list()" class="btn">Cancel</a> 
+        </div>
+        
+    }
+    
+}

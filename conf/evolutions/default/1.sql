@@ -38,22 +38,25 @@ create table foodorder (
   menu_id                   bigint,
   ordertype_id              bigint,
   food_id                   bigint,
-  quantity                  bigint not null,
+  quantity                  bigint,
   discount                  double,
   order_at                  datetime,
   deal                      tinyint(1) default 0,
+  price                     double,
   comments                  varchar(255),
   constraint pk_foodorder primary key (id))
 ;
 
 create table foodtype (
   id                        bigint auto_increment not null,
-  name                      varchar(100) not null,
+  name                      varchar(255),
+  free_price                tinyint(1) default 0,
   constraint pk_foodtype primary key (id))
 ;
 
 create table menu (
   id                        bigint auto_increment not null,
+  name                      varchar(255),
   usergroup_id              bigint,
   created_at                datetime,
   deal                      tinyint(1) default 0,
@@ -79,8 +82,8 @@ create table payment (
   id                        bigint auto_increment not null,
   user_id                   bigint,
   usergroup_id              bigint,
-  amount                    double not null,
-  created_at                datetime not null,
+  amount                    double,
+  created_at                datetime,
   description               varchar(255),
   constraint pk_payment primary key (id))
 ;
@@ -144,7 +147,7 @@ create table user (
 
 create table usergroup (
   id                        bigint auto_increment not null,
-  name                      varchar(100),
+  name                      varchar(255),
   im_on                     tinyint(1) default 0,
   open_reg                  tinyint(1) default 0,
   lucky_rule                bigint,
@@ -155,7 +158,7 @@ create table usergroup (
   bonus_order_ratio         double,
   bonus_manage_ratio        double,
   bonus_carry_ratio         double,
-  description               varchar(1000),
+  description               varchar(255),
   constraint pk_usergroup primary key (id))
 ;
 

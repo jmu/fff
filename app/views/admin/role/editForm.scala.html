@@ -1,0 +1,28 @@
+@(id: Long, roleForm: Form[Role])
+
+@import helper._
+@import controllers.admin._
+@import views.html.admin._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@admin_main(Html("Role"), nav = "admin", adminnav = "role", showBar = true) {
+    @form(routes.Roles.delete(id), 'class -> "pull-right") {
+        <input type="submit" value="Delete this role" class="btn btn-danger">
+    }
+    @form(routes.Roles.update(id), 'class -> "form-horizontal") {
+        <legend>Edit role</legend>
+        <fieldset>
+       		@inputText(roleForm("name"), '_label -> "Role name")
+            @inputText(roleForm("description"), '_label -> "description")
+        </fieldset>
+        
+        <div class="form-actions">
+            <input type="submit" value="Save this role" class="btn btn-primary"> or 
+            <a href="@routes.Roles.list()" class="btn">Cancel</a> 
+        </div>
+        
+    }
+    
+    
+}

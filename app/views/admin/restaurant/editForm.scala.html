@@ -18,12 +18,12 @@
             @inputText(restaurantForm("address"), '_label -> "address")
             @inputText(restaurantForm("manager"), '_label -> "Manager")
             <div class="control-group">
-			<div class="controls">
-				<label class="checkbox"><input type="checkbox" name="isAvailable" @if(restaurantForm.get.isAvailable !=null && restaurantForm.get.isAvailable){checked}>
-					激活
-				</label>
-				</div>
-				</div>
+                <div class="controls">
+                    <label class="checkbox"><input type="checkbox" name="isAvailable" @if(restaurantForm.get.isAvailable !=null && restaurantForm.get.isAvailable){checked}>
+                        激活
+                    </label>
+                </div>
+            </div>
         </fieldset>
         
         <div class="form-actions">

@@ -1,4 +1,4 @@
-@(currentPage: Page[Food], currentSortBy: String, currentOrder: String, currentFilter: String)
+@(currentPage: Page[Foodorder], currentSortBy: String, currentOrder: String, currentFilter: String)
 
 @import helper._
 @import helper.twitterBootstrap._
@@ -27,7 +27,7 @@
     }
     
     // Generate the link
-    routes.Foods.list(newPage, sortBy, order, currentFilter)
+    routes.Foodorders.list(newPage, sortBy, order, currentFilter)
     
 }
 
@@ -40,9 +40,9 @@
     </th>
 }
 
-@admin_main(Html("Food"), nav = "admin",adminnav = "food", showBar = true) {
+@admin_main(Html("Foodorder"), nav = "admin",adminnav = "foodorder", showBar = true) {
     
-    <!-- <h1 id="homeTitle">@Messages("foods.list.title", currentPage.getTotalRowCount)</h1> -->
+    <!-- <h1 id="homeTitle">@Messages("foodorders.list.title", currentPage.getTotalRowCount)</h1> -->
 
     @if(flash.containsKey("success")) {
         <div class="alert alert-success">
@@ -53,11 +53,11 @@
 
     <div id="form-actions">
         
-        <form class="form-inline" action="@link(0, "name")" method="GET">
-            <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by food name...">
+        <form class="form-inline" action="@link(0, "user_name")" method="GET">
+            <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by foodorder name...">
             <input type="submit" id="searchsubmit" value="Filter by name" class="btn btn-primary">
         
-        <a class="btn btn-success pull-right" id="add" href="@routes.Foods.create()">Add a new food</a>
+        <a class="btn btn-success pull-right" id="add" href="@routes.Foodorders.create()">Add a new foodorder</a>
         </form>
     </div>
     
@@ -69,39 +69,55 @@
         
     } else {
         
-        <table class="foods table table-bordered table-striped table-hover">
+        <table class="foodorders table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    @header("name", "Food name")
-                	@header("restaurant.name","Resturant")
+                    @header("id", "ID")
+                    @header("user.userName", "User name")
+                    @header("menu.name", "Menu name")
+                    @header("food.name", "Food name")
+                    @header("quantity", "quantity")
+                    @header("discount", "Discount")
                     @header("price", "Price")
-                    @header("isAvailable", "Available")
+                    <th class="header">
+                         <a href="#">Total</a>
+                    </th>
                 </tr>
             </thead>
             <tbody>
 
-                @for(food <- currentPage.getList) {
+                @for(foodorder <- currentPage.getList) {
                     <tr>
-                        <td><a href="@routes.Foods.edit(food.id)">@food.name</a></td>
-                    	<td>
-                            @if(food.restaurant != null) {
-                                @if(food.restaurant.name == null) {
-                                <em>-</em>
-                                } else {
-                                <a href="@routes.Restaurants.edit(food.restaurant.id)">@food.restaurant.name</a>
-                              }
-                            }
-                    	</td>
+                        <td><a
+                                href="@routes.Foodorders.edit(foodorder.id)">@foodorder.id</a></td>
+                        <td><a
+                                href="@routes.Users.edit(foodorder.user.id)">@foodorder.user.userName</a></td>
                         <td>
-                                @food.price
+                            @if(foodorder.menu != null){
+                            <a
+                                href="@routes.Menus.edit(foodorder.menu.id)">@foodorder.menu.name</a>
+                              }else{
+                              <em>-</em>
+                              }
                         </td>
                           <td>
-                            @if(food.isAvailable == null) {
+                            @if(foodorder.food.name == null) {
                                 <em>-</em>
                             } else {
-                                @food.isAvailable
+                                @foodorder.food.name
                             }
                         </td>
+                        <td>
+                            @foodorder.quantity
+                        </td>
+                        <td>
+                            @foodorder.discount
+                        </td>
+                        <td>
+                            @foodorder.price
+                        </td>
+                        <td>
+                            @{foodorder.quantity * foodorder.price - foodorder.discount}
                     </tr>
                 }
 

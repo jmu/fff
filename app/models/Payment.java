@@ -1,6 +1,10 @@
 package models;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,127 +19,46 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import play.db.ebean.Model;
+import play.data.validation.Constraints.Required;
+
+import com.avaje.ebean.Page;
 
 @Entity
 @Table(name = "payment")
 public class Payment extends Model {
-	private Long id;
-	private User user;
-	private Usergroup usergroup;
-	private double amount;
-	private Date createdAt;
-	private String description;
+    @Id
+	public Long id;
+    @ManyToOne
+	public User user;
+    @ManyToOne
+	public Usergroup usergroup;
+    @Required
+	public double amount;
+	public Date createdAt;
+	public String description;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Long getId() {
-		return this.id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+	public static Finder<Long, Payment> find = new Finder<Long, Payment>(
+			Long.class, Payment.class);
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", nullable = false)
-	public User getUser() {
-		return this.user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "usergroup_id", nullable = false)
-	public Usergroup getUsergroup() {
-		return this.usergroup;
-	}
-
-	public void setUsergroup(Usergroup usergroup) {
-		this.usergroup = usergroup;
-	}
-
-	@Column(name = "amount", nullable = false)
-	public double getAmount() {
-		return this.amount;
-	}
-
-	public void setAmount(double amount) {
-		this.amount = amount;
-	}
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_at", nullable = false)
-	public Date getCreatedAt() {
-		return this.createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	@Column(name = "description")
-	public String getDescription() {
-		return this.description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-
-		Payment pojo = (Payment) o;
-
-		if (user != null ? !user.equals(pojo.user) : pojo.user != null)
-			return false;
-		if (usergroup != null ? !usergroup.equals(pojo.usergroup)
-				: pojo.usergroup != null)
-			return false;
-		if (amount != pojo.amount)
-			return false;
-		if (createdAt != null ? !createdAt.equals(pojo.createdAt)
-				: pojo.createdAt != null)
-			return false;
-		if (description != null ? !description.equals(pojo.description)
-				: pojo.description != null)
-			return false;
-
-		return true;
-	}
-
-	public int hashCode() {
-		int result = 0;
-		result = (user != null ? user.hashCode() : 0);
-		result = 31 * result + (usergroup != null ? usergroup.hashCode() : 0);
-		result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-		result = 31 * result
-				+ (description != null ? description.hashCode() : 0);
-
-		return result;
-	}
-
-	public String toString() {
-		StringBuffer sb = new StringBuffer(getClass().getSimpleName());
-
-		sb.append(" [");
-		sb.append("id").append("='").append(getId()).append("', ");
-		sb.append("user").append("='").append(getUser()).append("', ");
-		sb.append("usergroup").append("='").append(getUsergroup())
-				.append("', ");
-		sb.append("amount").append("='").append(getAmount()).append("', ");
-		sb.append("createdAt").append("='").append(getCreatedAt())
-				.append("', ");
-		sb.append("description").append("='").append(getDescription()).append(
-				"'");
-		sb.append("]");
-
-		return sb.toString();
+	/**
+	 * Return a page of Payment
+	 * 
+	 * @param page
+	 *            Page to display
+	 * @param pageSize
+	 *            Number of Payments per page
+	 * @param sortBy
+	 *            Payment property used for sorting
+	 * @param order
+	 *            Sort order (either or asc or desc)
+	 * @param filter
+	 *            Filter applied on the name column
+	 */
+	public static Page<Payment> page(int page, int pageSize, String sortBy,
+			String order, String filter) {
+		return find.where().ilike("user.userName", "%" + filter + "%")
+				.orderBy(sortBy + " " + order).fetch("user").findPagingList(pageSize).getPage(page);
 	}
 
 }

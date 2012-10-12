@@ -1,8 +1,12 @@
 package controllers.admin;
 
-import controllers.admin.routes;
 import models.Food;
+
+import org.codehaus.jackson.JsonNode;
+
+import play.Logger;
 import play.data.Form;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.admin.food.createForm;
@@ -12,10 +16,6 @@ import views.html.admin.food.list;
 public class Foods extends Controller {
 	public static Result GO_HOME = redirect(routes.Foods.list(0, "name",
 			"asc", ""));
-
-	// public static Result list() {
-	// return ok(list.render());
-	// }
 
 	public static Result list(int page, String sortBy, String order,
 			String filter) {
@@ -35,7 +35,8 @@ public class Foods extends Controller {
 		if (foodForm.hasErrors()) {
 			return badRequest(editForm.render(id, foodForm));
 		}
-		foodForm.get().update(id);
+		Food r = foodForm.get();
+		r.update(id);
 		flash("success", "Food " + foodForm.get().name
 				+ " has been updated");
 		return GO_HOME;
@@ -53,9 +54,6 @@ public class Foods extends Controller {
 			return badRequest(createForm.render(foodForm));
 		}
 		Food r = foodForm.get();
-		if (r.isAvailable == null) {
-			r.isAvailable = false;
-		}
 		r.save();
 		flash("success", "Food " + foodForm.get().name
 				+ " has been created");
@@ -66,6 +64,18 @@ public class Foods extends Controller {
 		Food.find.ref(id).delete();
 		flash("success", "Food has been deleted");
 		return GO_HOME;
+	}
+	
+	public static Result getFoodJson(Long id) {
+		Food food = Food.find.ref(id);
+		JsonNode json = null;
+		try {
+			json = Json.toJson(food);
+		} catch (Exception e) {
+			Logger.error("get Food by Id" + id, e);
+			return badRequest();
+		}
+		return ok(json);
 	}
 
 }

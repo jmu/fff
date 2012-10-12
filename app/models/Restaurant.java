@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import play.data.format.Formats;
 import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.Required;
@@ -42,6 +44,7 @@ public class Restaurant extends Model {
 	public Boolean isAvailable;
 
 	@OneToMany
+	@JsonIgnore
 	public Set<Food> foods = new HashSet<Food>(0);
 
 	public static Finder<Long, Restaurant> find = new Finder<Long, Restaurant>(

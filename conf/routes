@@ -30,26 +30,88 @@ POST    /restaurants/:id              controllers.admin.Restaurants.update(id:Lo
 # Delete a restaurant
 POST    /restaurants/:id/delete       controllers.admin.Restaurants.delete(id:Long)
 #--------------------
+GET     /admin/foodtypes            controllers.admin.Foodtypes.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")
+# Add Foodtype
+GET     /foodtypes/new              controllers.admin.Foodtypes.create()
+POST    /foodtypes                  controllers.admin.Foodtypes.save()
+
+# Edit existing Foodtype
+GET     /foodtypes/:id              controllers.admin.Foodtypes.edit(id:Long)
+POST    /foodtypes/:id              controllers.admin.Foodtypes.update(id:Long)
+
+# Delete a Foodtype
+POST    /foodtypes/:id/delete       controllers.admin.Foodtypes.delete(id:Long)
+#--------------------
 GET     /admin/foods            controllers.admin.Foods.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")
-# Add restaurant
+# Add Food
 GET     /foods/new              controllers.admin.Foods.create()
 POST    /foods                  controllers.admin.Foods.save()
 
-# Edit existing restaurant
+# Edit existing Food
 GET     /foods/:id              controllers.admin.Foods.edit(id:Long)
+GET     /foods/json/:id              controllers.admin.Foods.getFoodJson(id:Long)
 POST    /foods/:id              controllers.admin.Foods.update(id:Long)
 
-# Delete a restaurant
+
+# Delete a Food
 POST    /foods/:id/delete       controllers.admin.Foods.delete(id:Long)
 #--------------------
 GET     /admin/users            controllers.admin.Users.list(p:Int ?= 0, s ?= "userName", o ?= "asc", f ?= "")
-# Add restaurant
+# Add User
 GET     /users/new              controllers.admin.Users.create()
 POST    /users                  controllers.admin.Users.save()
 
-# Edit existing restaurant
+# Edit existing User
 GET     /users/:id              controllers.admin.Users.edit(id:Long)
 POST    /users/:id              controllers.admin.Users.update(id:Long)
 
-# Delete a restaurant
+# Delete a User
 POST    /users/:id/delete       controllers.admin.Users.delete(id:Long)
+#--------------------
+GET     /admin/roles            controllers.admin.Roles.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")
+# Add Role
+GET     /roles/new              controllers.admin.Roles.create()
+POST    /roles                  controllers.admin.Roles.save()
+
+# Edit existing Role
+GET     /roles/:id              controllers.admin.Roles.edit(id:Long)
+POST    /roles/:id              controllers.admin.Roles.update(id:Long)
+
+# Delete a Role
+POST    /roles/:id/delete       controllers.admin.Roles.delete(id:Long)
+#--------------------
+GET     /admin/menus            controllers.admin.Menus.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")
+# Add Menu
+GET     /menus/new              controllers.admin.Menus.create()
+POST    /menus                  controllers.admin.Menus.save()
+
+# Edit existing Menu
+GET     /menus/:id              controllers.admin.Menus.edit(id:Long)
+POST    /menus/:id              controllers.admin.Menus.update(id:Long)
+
+# Delete a Menu
+POST    /menus/:id/delete       controllers.admin.Menus.delete(id:Long)
+#--------------------
+GET     /admin/foodorders            controllers.admin.Foodorders.list(p:Int ?= 0, s ?= "user_name", o ?= "asc", f ?= "")
+# Add Foodorder
+GET     /foodorders/new              controllers.admin.Foodorders.create()
+POST    /foodorders                  controllers.admin.Foodorders.save()
+
+# Edit existing Foodorder
+GET     /foodorders/:id              controllers.admin.Foodorders.edit(id:Long)
+POST    /foodorders/:id              controllers.admin.Foodorders.update(id:Long)
+
+# Delete a Foodorder
+POST    /foodorders/:id/delete       controllers.admin.Foodorders.delete(id:Long)
+#--------------------
+GET     /admin/payments            controllers.admin.Payments.list(p:Int ?= 0, s ?= "user_name", o ?= "asc", f ?= "")
+# Add Rayment
+GET     /payments/new              controllers.admin.Payments.create()
+POST    /payments                  controllers.admin.Payments.save()
+
+# Edit existing Rayment
+GET     /payments/:id              controllers.admin.Payments.edit(id:Long)
+POST    /payments/:id              controllers.admin.Payments.update(id:Long)
+
+# Delete a Rayment
+POST    /payments/:id/delete       controllers.admin.Payments.delete(id:Long)

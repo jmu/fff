@@ -1,0 +1,24 @@
+@(foodtypeForm: Form[Foodtype])
+
+@import helper._
+@import controllers.admin._
+@import views.html.admin._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@admin_main(Html("Foodtype"), nav = "admin", adminnav = "foodtype", showBar = true) {
+    @form(routes.Foodtypes.save(), 'class -> "form-horizontal") {
+        <legend>Add a foodtype</legend>
+        <fieldset>
+            @inputText(foodtypeForm("name"), '_label -> "Foodtype name")
+            @checkbox(foodtypeForm("freePrice"), '_label -> "freePrice")
+        </fieldset>
+        
+        <div class="form-actions">
+            <input type="submit" value="Create this foodtype" class="btn btn-primary"> or 
+            <a href="@routes.Foodtypes.list()" class="btn">Cancel</a> 
+        </div>
+        
+    }
+    
+}

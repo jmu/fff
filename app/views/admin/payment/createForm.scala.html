@@ -1,0 +1,30 @@
+@(paymentForm: Form[Payment])
+
+@import helper._
+@import controllers.admin._
+@import views.html.admin._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@admin_main(Html("Payment"), nav = "admin", adminnav = "payment", showBar = true) {
+    @form(routes.Payments.save(), 'class -> "form-horizontal") {
+        <legend>Add a payment</legend>
+        <fieldset>
+           @select(
+                paymentForm("user.id"), 
+                options(User.options), 
+                '_label -> "User", '_default -> "-- Choose a User --",
+                '_showConstraints -> false
+            )
+       		@inputText(paymentForm("amount"), '_label -> "Amount")
+            @inputText(paymentForm("description"), '_label -> "description")
+        </fieldset>
+        
+        <div class="form-actions">
+            <input type="submit" value="Create this payment" class="btn btn-primary"> or 
+            <a href="@routes.Payments.list()" class="btn">Cancel</a> 
+        </div>
+        
+    }
+    
+}

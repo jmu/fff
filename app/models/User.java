@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.avaje.ebean.Page;
 
 import play.data.validation.Constraints.Email;
@@ -33,21 +35,22 @@ public class User extends Model {
 	public String userName;
 	public String fullName;
     @Required
-    @MinLength(4)
+    @MinLength(6)
 	public String password;
+    @Required
 	@Email
 	public String email;
 	public String phoneNumber;
 	public Double money;
 	public Long bonus;
-	public Boolean accountExpired;
-	public Boolean accountLocked;
-	public Boolean accountEnabled;
-	public Boolean credentialsExpired;
+	public Boolean accountExpired = false;
+	public Boolean accountLocked = false;
+	public Boolean accountEnabled = true;
+	public Boolean credentialsExpired = false;
 	public Date regAt;
 	public Date lastLogin;
 	public String ip;
-	public Boolean mailReminderOn;
+	public Boolean mailReminderOn = false;
 	
 	@ManyToOne
 	public Usergroup usergroup;
@@ -55,14 +58,19 @@ public class User extends Model {
 	public Role role;
 	
 	@OneToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
 	public Set<MenuUser> menuUsers = new HashSet<MenuUser>(0);
 	@OneToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
 	public Set<Foodorder> foodorders = new HashSet<Foodorder>(0);
 	@OneToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
 	public Set<Schedule> schedules = new HashSet<Schedule>(0);
 	@OneToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
 	public Set<Payment> payments = new HashSet<Payment>(0);
 	@OneToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
 	public Set<Comment> comments = new HashSet<Comment>(0);
 
 
@@ -98,13 +106,13 @@ public class User extends Model {
 	public static Page<User> page(int page, int pageSize, String sortBy,
 			String order, String filter) {
 		return findById.where().ilike("userName", "%" + filter + "%")
-				.orderBy(sortBy + " " + order)//.fetch("company")
+				.orderBy(sortBy + " " + order)
 				.findPagingList(pageSize).getPage(page);
 	}
     
     public static Map<String,String> options() {
         LinkedHashMap<String,String> options = new LinkedHashMap<String,String>();
-        for(User c: findById.where().eq("isAvailable", true).orderBy("userName").findList()) {
+        for(User c: findById.where().eq("accountEnabled", true).orderBy("userName").findList()) {
             options.put(c.id.toString(), c.userName);
         }
         return options;

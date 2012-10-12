@@ -1,4 +1,4 @@
-@(currentPage: Page[Food], currentSortBy: String, currentOrder: String, currentFilter: String)
+@(currentPage: Page[Menu], currentSortBy: String, currentOrder: String, currentFilter: String)
 
 @import helper._
 @import helper.twitterBootstrap._
@@ -27,7 +27,7 @@
     }
     
     // Generate the link
-    routes.Foods.list(newPage, sortBy, order, currentFilter)
+    routes.Menus.list(newPage, sortBy, order, currentFilter)
     
 }
 
@@ -40,9 +40,9 @@
     </th>
 }
 
-@admin_main(Html("Food"), nav = "admin",adminnav = "food", showBar = true) {
+@admin_main(Html("Menu"), nav = "admin",adminnav = "menu", showBar = true) {
     
-    <!-- <h1 id="homeTitle">@Messages("foods.list.title", currentPage.getTotalRowCount)</h1> -->
+    <!-- <h1 id="homeTitle">@Messages("menus.list.title", currentPage.getTotalRowCount)</h1> -->
 
     @if(flash.containsKey("success")) {
         <div class="alert alert-success">
@@ -54,10 +54,10 @@
     <div id="form-actions">
         
         <form class="form-inline" action="@link(0, "name")" method="GET">
-            <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by food name...">
+            <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by menu name...">
             <input type="submit" id="searchsubmit" value="Filter by name" class="btn btn-primary">
         
-        <a class="btn btn-success pull-right" id="add" href="@routes.Foods.create()">Add a new food</a>
+        <a class="btn btn-success pull-right" id="add" href="@routes.Menus.create()">Add a new menu</a>
         </form>
     </div>
     
@@ -69,39 +69,50 @@
         
     } else {
         
-        <table class="foods table table-bordered table-striped table-hover">
+        <table class="menus table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    @header("name", "Food name")
-                	@header("restaurant.name","Resturant")
-                    @header("price", "Price")
-                    @header("isAvailable", "Available")
+                    @header("name", "Menu name")
+                    @header("usergroup.name", "User group")
+                    @header("createdAt", "createdAt")
+                    @header("deal", "Deal")
+                    @header("closedAt", "closedAt")
+                    @header("isAvailable", "isAvailable")
                 </tr>
             </thead>
             <tbody>
 
-                @for(food <- currentPage.getList) {
+                @for(menu <- currentPage.getList) {
                     <tr>
-                        <td><a href="@routes.Foods.edit(food.id)">@food.name</a></td>
-                    	<td>
-                            @if(food.restaurant != null) {
-                                @if(food.restaurant.name == null) {
-                                <em>-</em>
-                                } else {
-                                <a href="@routes.Restaurants.edit(food.restaurant.id)">@food.restaurant.name</a>
-                              }
-                            }
-                    	</td>
-                        <td>
-                                @food.price
-                        </td>
+                        <td><a href="@routes.Menus.edit(menu.id)">@menu.name</a></td>
                           <td>
-                            @if(food.isAvailable == null) {
+                            @if(menu.usergroup == null || menu.usergroup.name ==
+                            null) {
                                 <em>-</em>
                             } else {
-                                @food.isAvailable
+                                @menu.usergroup.name
                             }
                         </td>
+                        <td>
+                            @if(menu.createdAt == null) {
+                                <em>-</em>
+                            } else {
+                             @menu.createdAt.format("yyyy-MM-dd HH:mm:ss")
+                            }
+                         </td>
+                         <td>
+                             @menu.deal
+                         </td>
+                         <td>
+                            @if(menu.closedAt == null) {
+                                <em>-</em>
+                            } else {
+                             @menu.closedAt.format("yyyy-MM-dd HH:mm:ss")
+                             }
+                         </td>
+                         <td>
+                             @menu.isAvailable
+                         </td>
                     </tr>
                 }
 

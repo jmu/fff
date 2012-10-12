@@ -1,6 +1,8 @@
 package models;
 
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -8,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.Required;
@@ -24,6 +28,7 @@ public class Food extends Model {
 	@ManyToOne
 	public Foodtype foodtype;
 	@ManyToOne
+    @Required
 	public Restaurant restaurant;
 	@Required
 	@MaxLength(100)
@@ -35,11 +40,19 @@ public class Food extends Model {
 	public Long rankingVote;
 
 	@OneToMany
+	@JsonIgnore
 	public Set<Foodorder> foodorders = new HashSet<Foodorder>(0);
 	@OneToMany
 	public Set<Comment> comments = new HashSet<Comment>(0);
 	@OneToMany
 	public Set<Schedule> schedules = new HashSet<Schedule>(0);
+
+    public String validate() {
+        if (this.isAvailable == null) {
+            this.isAvailable = false;
+        }
+        return null;
+    }
 
 	public static Finder<Long, Food> find = new Finder<Long, Food>(Long.class,
 			Food.class);
@@ -50,4 +63,12 @@ public class Food extends Model {
 				.orderBy(sortBy + " " + order).fetch("restaurant")
 				.findPagingList(pageSize).getPage(page);
 	}
+
+    public static Map<String,String> options() {
+        LinkedHashMap<String,String> options = new LinkedHashMap<String,String>();
+        for(Food c: find.where().eq("isAvailable", true).orderBy("name").findList()) {
+            options.put(c.id.toString(), c.name);
+        }
+        return options;
+    }
 }

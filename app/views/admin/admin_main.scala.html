@@ -8,12 +8,23 @@
 			<div class="span3">
 				<div class="well sidebar-nav">
 					<ul class="nav nav-list">
-						<li class="nav-header">Admin Management</li>
+						<li class="nav-header">User Management</li>
 						<li class="@("active".when(adminnav == "user"))"><a href="@routes.Users.list()">User Management</a></li>
+						<li class="@("active".when(adminnav == "role"))"><a
+                            href="@routes.Roles.list()">Role Management</a></li>
+						<li class="nav-header">Food Management</li>
 						<li class="@("active".when(adminnav == "restaurant"))"><a href="@routes.Restaurants.list()">Restaurant Management</a></li>
+						<li class="@("active".when(adminnav == "foodtype"))"><a
+                            href="@routes.Foodtypes.list()">Food Type Management</a></li>
 						<li class="@("active".when(adminnav == "food"))"><a href="@routes.Foods.list()">Food Management</a></li>
-						<li class="nav-header">Restaurant Management</li>
+						<li class="nav-header">Order Management</li>
 						<li><a href=""></a></li>
+						<li class="@("active".when(adminnav == "menu"))"><a
+                            href="@routes.Menus.list()">Menu Management</a></li>
+						<li class="@("active".when(adminnav == "foodorder"))"><a
+                            href="@routes.Foodorders.list()">Food Order Management</a></li>
+						<li class="@("active".when(adminnav == "payment"))"><a
+                            href="@routes.Payments.list()">Payment Management</a></li>
 					</ul>
 				
 				</div>
