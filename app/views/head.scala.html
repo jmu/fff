@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Fnst Fast Food - @title</title>
+        <title>Fnst Fast Food 0.1alpha - @title</title>
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("css/bootstrap.min.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("css/bootstrap-responsive.min.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("css/main.css")">
@@ -23,20 +23,24 @@
           <a class="brand" href="@routes.Application.index()">Fnst Fast Food</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="">
-                <a href="@routes.Application.index()">概述</a>
+              <li class="@("active".when(nav == "main"))">
+                <a href="@routes.Projects.index()">Main</a>
               </li>
-                <li class="@("active".when(nav == "signup"))">
-                <a href="./scaffolding.html">框架</a>
+              <li class="@("active".when(nav == "myfood"))">
+                <a href="#">My Foods</a>
               </li>
-              <li class="">
-                <a href="./examples.html">例子</a>
+              <li class="@("active".when(nav == "recharge"))">
+                <a href="#">Recharge</a>
               </li>
 	      <li class="@("active".when(nav == "admin"))">
-                <a href="@controllers.admin.routes.Restaurants.list()">Admin</a>
+                <a
+                    href="@controllers.admin.routes.Restaurants.list()">Administration</a>
               </li>
             </ul>
             <ul class="nav pull-right">
+            <li class="divider-vertical"></li>
+            	<li class=""><a href="#">@session.get("userid")</a></li>
+           
             <li class="divider-vertical"></li>
             	<li class=""><a href="@routes.Application.logout()">Logout</a></li>
             </ul>

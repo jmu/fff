@@ -130,7 +130,6 @@ create table user (
   password                  varchar(255),
   email                     varchar(255),
   phone_number              varchar(255),
-  money                     double,
   bonus                     bigint,
   account_expired           tinyint(1) default 0,
   account_locked            tinyint(1) default 0,

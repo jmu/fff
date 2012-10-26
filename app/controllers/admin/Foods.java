@@ -9,10 +9,13 @@ import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
+import secure.Secured;
 import views.html.admin.food.createForm;
 import views.html.admin.food.editForm;
 import views.html.admin.food.list;
 
+@Security.Authenticated(Secured.class)
 public class Foods extends Controller {
 	public static Result GO_HOME = redirect(routes.Foods.list(0, "name",
 			"asc", ""));

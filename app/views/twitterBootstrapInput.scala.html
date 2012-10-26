@@ -8,6 +8,8 @@
 	<label class="control-label" for="@elements.id">@elements.label</label>
 	<div class="controls">
 		@elements.input
-		<span class="help-inline">@elements.infos.mkString(", ")</span> 
+		<span class="help-inline">@elements.errors(elements.lang).mkString(", ")</span>
+        <span class="help-block">@elements.infos(elements.lang).mkString(", ")</span> 
 	</div>
+	
 </div>

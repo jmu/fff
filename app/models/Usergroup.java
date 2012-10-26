@@ -39,11 +39,11 @@ public class Usergroup extends Model {
     @MaxLength(1000)
 	public String description;
 
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.MERGE)
 	public Set<User> users = new HashSet<User>(0);
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.MERGE)
 	public Set<Payment> payments = new HashSet<Payment>(0);
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.MERGE)
 	public Set<Menu> menus = new HashSet<Menu>(0);
 
 }

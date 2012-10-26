@@ -76,12 +76,15 @@
                     @header("user.userName", "User name")
                     @header("menu.name", "Menu name")
                     @header("food.name", "Food name")
+                    <!--
                     @header("quantity", "quantity")
                     @header("discount", "Discount")
                     @header("price", "Price")
+                    -->
                     <th class="header">
                          <a href="#">Total</a>
                     </th>
+                    @header("deal", "Deal")
                 </tr>
             </thead>
             <tbody>
@@ -107,6 +110,7 @@
                                 @foodorder.food.name
                             }
                         </td>
+                        <!--
                         <td>
                             @foodorder.quantity
                         </td>
@@ -116,8 +120,17 @@
                         <td>
                             @foodorder.price
                         </td>
+                        -->
                         <td>
-                            @{foodorder.quantity * foodorder.price - foodorder.discount}
+                            @foodorder.quantity X @foodorder.price
+                            @if(foodorder.discount > 0) { - @foodorder.discount} 
+                            @if(foodorder.discount < 0) @{ "+" + " " + Math.abs(foodorder.discount)}
+                            = <strong>$@{foodorder.quantity * foodorder.price -
+                                foodorder.discount}</strong>
+                        </td>
+                        <td>
+                        	@foodorder.deal
+                        </td>
                     </tr>
                 }
 

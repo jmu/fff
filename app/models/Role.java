@@ -30,7 +30,7 @@ public class Role extends Model {
 	public String name;
 	public String description;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.MERGE)
 	@JsonIgnore
 	public Set<User> users = new HashSet<User>(0);
 

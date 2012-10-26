@@ -47,15 +47,16 @@ public class SignUp extends Controller {
 		 * if(!"true".equals(filledForm.field("accept").value())) {
 		 * filledForm.reject("accept",
 		 * "You must accept the terms and conditions"); }
-		 * 
-		 * // Check repeated password
-		 * if(!filledForm.field("password").valueOr("").isEmpty()) {
-		 * if(!filledForm
-		 * .field("password").valueOr("").equals(filledForm.field("repeatPassword"
-		 * ).value())) { filledForm.reject("repeatPassword",
-		 * "Password don't match"); } }
-		 * 
-		 * // Check if the username is valid if(!filledForm.hasErrors()) {
+		 */ 
+		  // Check repeated password
+		if (!filledForm.field("password").valueOr("").isEmpty()) {
+			if (!filledForm.field("password").valueOr("")
+					.equals(filledForm.field("repeatPassword").value())) {
+				filledForm.reject("repeatPassword", "Password don't match");
+			}
+		}
+		  
+		 /* // Check if the username is valid if(!filledForm.hasErrors()) {
 		 * if(filledForm.get().username.equals("admin") ||
 		 * filledForm.get().username.equals("guest")) {
 		 * filledForm.reject("username", "This username is already taken"); } }

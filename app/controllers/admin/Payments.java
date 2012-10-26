@@ -5,10 +5,13 @@ import models.Payment;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
+import secure.Secured;
 import views.html.admin.payment.createForm;
 import views.html.admin.payment.editForm;
 import views.html.admin.payment.list;
 
+@Security.Authenticated(Secured.class)
 public class Payments extends Controller {
 	public static Result GO_HOME = redirect(routes.Payments.list(0, "user_name",
 			"asc", ""));

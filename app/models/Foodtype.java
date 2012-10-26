@@ -30,7 +30,7 @@ public class Foodtype extends Model {
     //user can change the price
     public Boolean freePrice = false;
 
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.PERSIST)
 	@JsonIgnore
     public Set<Food> foods = new HashSet<Food>(0);
 

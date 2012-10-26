@@ -5,10 +5,13 @@ import models.User;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
+import secure.Secured;
 import views.html.admin.user.createForm;
 import views.html.admin.user.editForm;
 import views.html.admin.user.list;
 
+@Security.Authenticated(Secured.class)
 public class Users extends Controller {
     public static Result GO_HOME = redirect(routes.Users.list(0, "userName",
                 "asc", ""));
@@ -23,6 +26,8 @@ public class Users extends Controller {
     public static Result edit(Long id) {
         Form<User> userForm = form(User.class).fill(
                 User.findById.byId(id));
+        //clean the sha1 password
+        userForm.get().password = null;
         return ok(editForm.render(id, userForm));
     }
 
