@@ -68,9 +68,10 @@ public class User extends Model {
 	
 //	@Transient
 	@Formula(select=
-			"(select ifnull(p.amount,0)-ifnull(sum(f.price*f.quantity-f.discount),0) as money"
-				+ " from foodorder as f where f.deal and f.user_id = ${ta}.id)",
-				join="left join payment as p on p.user_id = ${ta}.id")
+			"(select ifnull(sum(p.amount),0) from payment p where p.user_id = ${ta}.id)"+
+            "-(select ifnull(sum(f.price*f.quantity-f.discount),0)"
+				+ " from foodorder as f where f.deal and f.user_id = ${ta}.id) as money")
+				//join="left join payment as p on p.user_id = ${ta}.id")
 	public Double money;
 	public Long bonus;
 	public Boolean accountExpired = false;
@@ -197,7 +198,7 @@ public class User extends Model {
 	
 	public static Page<User> page(int page, int pageSize, String sortBy,
 			String order, String filter) {
-		return findById.where().ilike("userName", "%" + filter + "%")
+		return findById.fetch("role").fetch("usergroup").where().ilike("userName", "%" + filter + "%")
 				.orderBy(sortBy + " " + order).findPagingList(pageSize)
 				.getPage(page);
 	}

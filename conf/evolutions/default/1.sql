@@ -157,6 +157,7 @@ create table usergroup (
   bonus_order_ratio         double,
   bonus_manage_ratio        double,
   bonus_carry_ratio         double,
+  is_available              tinyint(1) default 0,
   description               varchar(255),
   constraint pk_usergroup primary key (id))
 ;

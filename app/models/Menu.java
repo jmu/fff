@@ -84,7 +84,7 @@ public class Menu extends Model {
 	
     public static Map<String,String> options() {
         LinkedHashMap<String,String> options = new LinkedHashMap<String,String>();
-        for(Menu c: find.where().orderBy("name").findList()) {
+        for(Menu c: find.where().ne("deal",true).orderBy("name").findList()) {
             options.put(c.id.toString(), c.name);
         }
         return options;

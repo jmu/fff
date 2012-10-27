@@ -74,6 +74,8 @@
                 <tr>
                 @header("userName", "User Name")
                 @header("fullName", "Full Name")
+                @header("role.name", "Role")
+                @header("usergroup.name", "Usergroup")
                 @header("email", "Email")
                 @header("regAt", "RegAt")
                 @header("money", "Money")
@@ -89,6 +91,20 @@
                                 <em>-</em>
                             } else {
                                 @user.fullName
+                            }
+                        </td>
+                        <td>
+                            @if(user.role == null){
+                                <em>-</em>
+                            } else {
+                                @user.role.name
+                            }
+                        </td>
+                        <td>
+                            @if(user.usergroup == null){
+                                <em>-</em>
+                            } else {
+                                @user.usergroup.name
                             }
                         </td>
                         <td>

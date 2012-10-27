@@ -1,6 +1,8 @@
 package models;
 
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,6 +19,8 @@ import javax.persistence.Table;
 import play.db.ebean.Model;
 import play.data.validation.Constraints.Required;
 import play.data.validation.Constraints.MaxLength;
+
+import com.avaje.ebean.Page;
 
 @Entity
 @Table(name = "usergroup")
@@ -36,14 +40,53 @@ public class Usergroup extends Model {
 	public Double bonusOrderRatio;
 	public Double bonusManageRatio;
 	public Double bonusCarryRatio;
+    public Boolean isAvailable;
     @MaxLength(1000)
 	public String description;
 
-    @OneToMany(cascade=CascadeType.MERGE)
+    @OneToMany
 	public Set<User> users = new HashSet<User>(0);
-    @OneToMany(cascade=CascadeType.MERGE)
+    @OneToMany
 	public Set<Payment> payments = new HashSet<Payment>(0);
-    @OneToMany(cascade=CascadeType.MERGE)
+    @OneToMany
 	public Set<Menu> menus = new HashSet<Menu>(0);
 
+    public String validate() {
+        if (isAvailable == null) {
+            isAvailable = false;
+        }
+        return null;
+    }
+
+	public static Finder<Long, Usergroup> find = new Finder<Long, Usergroup>(
+			Long.class, Usergroup.class);
+
+	/**
+	 * Return a page of Usergroup
+	 * 
+	 * @param page
+	 *            Page to display
+	 * @param pageSize
+	 *            Number of Usergroups per page
+	 * @param sortBy
+	 *            Usergroup property used for sorting
+	 * @param order
+	 *            Sort order (either or asc or desc)
+	 * @param filter
+	 *            Filter applied on the name column
+	 */
+	public static Page<Usergroup> page(int page, int pageSize, String sortBy,
+			String order, String filter) {
+		return find.where().ilike("name", "%" + filter + "%")
+				.orderBy(sortBy + " " + order)
+				.findPagingList(pageSize).getPage(page);
+	}
+	
+    public static Map<String,String> options() {
+        LinkedHashMap<String,String> options = new LinkedHashMap<String,String>();
+        for(Usergroup c: find.where().eq("isAvailable", true).orderBy("name").findList()) {
+            options.put(c.id.toString(), c.name);
+        }
+        return options;
+    }
 }

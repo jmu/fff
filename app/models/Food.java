@@ -66,7 +66,8 @@ public class Food extends Model {
 
     public static Map<String,String> options() {
         LinkedHashMap<String,String> options = new LinkedHashMap<String,String>();
-        for(Food c: find.where().eq("isAvailable", true).orderBy("name").findList()) {
+        for(Food c: find.where().eq("isAvailable", true)
+                .eq("restaurant.isAvailable", true).orderBy("name").findList()) {
             options.put(c.id.toString(), c.name);
         }
         return options;

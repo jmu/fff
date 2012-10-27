@@ -85,6 +85,7 @@
                          <a href="#">Total</a>
                     </th>
                     @header("deal", "Deal")
+                    @header("orderAt", "Order At")
                 </tr>
             </thead>
             <tbody>
@@ -130,6 +131,9 @@
                         </td>
                         <td>
                         	@foodorder.deal
+                        </td>
+                        <td>
+                            @foodorder.orderAt.format("yyyy-MM-dd HH:mm:ss")
                         </td>
                     </tr>
                 }

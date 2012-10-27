@@ -25,6 +25,11 @@
                 '_label -> "Role", '_default -> "-- Choose a Role --",
                 '_showConstraints -> false
             )
+           @select(
+                userForm("usergroup.id"), 
+                options(Usergroup.options), 
+                '_label -> "Usergroup", '_default -> "-- Choose a Usergroup --"
+            )
             @inputText(userForm("userName"), '_label -> "User name")
             @inputText(userForm("fullName"), '_label -> "Full Name")
             @inputText(userForm("email"), '_label -> "Email")
