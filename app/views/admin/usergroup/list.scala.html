@@ -1,0 +1,135 @@
+@(currentPage: Page[Usergroup], currentSortBy: String, currentOrder: String, currentFilter: String)
+
+@import helper._
+@import helper.twitterBootstrap._
+@import controllers.admin._
+@import views.html.admin._
+
+@****************************************
+* Helper generating navigation links    *
+****************************************@
+@link(newPage:Int, newSortBy:String) = @{
+    
+    var sortBy = currentSortBy
+    var order = currentOrder
+    
+    if(newSortBy != null) {
+        sortBy = newSortBy
+        if(currentSortBy == newSortBy) {
+            if(currentOrder == "asc") {
+                order = "desc"
+            } else {
+                order = "asc"
+            }
+        } else {
+            order = "asc"
+        }
+    }
+    
+    // Generate the link
+    routes.Usergroups.list(newPage, sortBy, order, currentFilter)
+    
+}
+
+@**********************************
+* Helper generating table headers *
+***********************************@
+@header(key:String, title:String) = {
+    <th class="@key.replace(".","_") header @if(currentSortBy == key) @{if(currentOrder == "asc") "headerSortDown" else "headerSortUp"}">
+        <a href="@link(0, key)">@title</a>
+    </th>
+}
+
+@admin_main(Html("Usergroup"), nav = "admin",adminnav = "usergroup", showBar = true) {
+    
+    <!-- <h1 id="homeTitle">@Messages("usergroups.list.title", currentPage.getTotalRowCount)</h1> -->
+
+    @if(flash.containsKey("success")) {
+        <div class="alert alert-success">
+            <button class="close" data-dismiss="alert" type="button">×</button>
+            <strong>Done!</strong> @flash.get("success")
+        </div>
+    } 
+
+    <div id="form-actions">
+        
+        <form class="form-inline" action="@link(0, "name")" method="GET">
+            <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by usergroup name...">
+            <input type="submit" id="searchsubmit" value="Filter by name" class="btn btn-primary">
+        
+        <a class="btn btn-success pull-right" id="add" href="@routes.Usergroups.create()">Add a new usergroup</a>
+        </form>
+    </div>
+    
+    @if(currentPage.getTotalRowCount == 0) {
+        
+        <div class="well">
+            <em>Nothing to display</em>
+        </div>
+        
+    } else {
+        
+        <table class="usergroups table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    @header("name", "Usergroup name")
+                    @header("isAvailable", "IsAvailable")
+                    @header("description", "Description")
+                </tr>
+            </thead>
+            <tbody>
+
+                @for(usergroup <- currentPage.getList) {
+                    <tr>
+                        <td><a href="@routes.Usergroups.edit(usergroup.id)">@usergroup.name</a></td>
+                          <td>
+                            @if(usergroup.isAvailable == null) {
+                                <em>-</em>
+                            } else {
+                                @usergroup.isAvailable
+                            }
+                        </td>
+                          <td>
+                            @if(usergroup.description == null) {
+                                <em>-</em>
+                            } else {
+                                @usergroup.description
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+        <div id="pagination" class="pagination pagination-right">
+            <ul>
+                @if(currentPage.hasPrev) {
+                    <li class="prev">
+                        <a href="@link(currentPage.getPageIndex - 1, null)">&larr; Previous</a>
+                    </li>
+                } else {
+                    <li class="prev disabled">
+                        <a>&larr; Previous</a>
+                    </li>
+                }
+                <li class="current">
+                    <a>Displaying @currentPage.getDisplayXtoYofZ(" to "," of ")</a>
+                </li>
+                @if(currentPage.hasNext) {
+                    <li class="next">
+                        <a href="@link(currentPage.getPageIndex + 1, null)">Next &rarr;</a>
+                    </li>
+                } else {
+                    <li class="next disabled">
+                        <a>Next &rarr;</a>
+                    </li>
+                }
+            </ul>
+        </div>
+        
+    }
+        
+}
+
+            

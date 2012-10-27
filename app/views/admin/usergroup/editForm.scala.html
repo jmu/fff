@@ -1,0 +1,29 @@
+@(id: Long, usergroupForm: Form[Usergroup])
+
+@import helper._
+@import controllers.admin._
+@import views.html.admin._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@admin_main(Html("Usergroup"), nav = "admin", adminnav = "usergroup", showBar = true) {
+    @form(routes.Usergroups.delete(id), 'class -> "pull-right") {
+        <input type="submit" value="Delete this usergroup" class="btn btn-danger">
+    }
+    @form(routes.Usergroups.update(id), 'class -> "form-horizontal") {
+        <legend>Edit usergroup</legend>
+        <fieldset>
+            @inputText(usergroupForm("name"), '_label -> "Usergroup name")
+            @textarea(usergroupForm("description"), '_label -> "Description")
+            @checkbox(usergroupForm("isAvailable"), '_label -> "IsAvailable")
+        </fieldset>
+        
+        <div class="form-actions">
+            <input type="submit" value="Save this usergroup" class="btn btn-primary"> or 
+            <a href="@routes.Usergroups.list()" class="btn">Cancel</a> 
+        </div>
+        
+    }
+    
+    
+}
