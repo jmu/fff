@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -30,17 +31,20 @@ public class Menu extends Model {
     public String name;
     @ManyToOne
     public Usergroup usergroup;
+    //the date of book for
+    public Date dateFor;
     public Date createdAt;
+    //public Date updatedAt;
     public Boolean deal;
     public Date closedAt;
     public boolean isAvailable;
 
     @OneToMany
 	@JsonIgnore
-    public Set<MenuUser> menuUsers = new HashSet<MenuUser>(0);
+    public Set<MenuUser> menuUsers = new TreeSet<MenuUser>();
     @OneToMany
 	@JsonIgnore
-    public Set<Foodorder> foodorders = new HashSet<Foodorder>(0);
+    public Set<Foodorder> foodorders = new TreeSet<Foodorder>();
 
 	public static Finder<Long, Menu> find = new Finder<Long, Menu>(
 			Long.class, Menu.class);
@@ -74,6 +78,18 @@ public class Menu extends Model {
 				.findPagingList(pageSize).getPage(page);
 	}
 	
+	public static Page<Menu> afterDay(int page, int pageSize, String sortBy,
+			String order, Date date) {
+		return find.fetch("foodorders")
+                .fetch("foodorders.food")
+                .fetch("foodorders.user")
+                .where()
+                .gt("dateFor",date)
+                //.orderBy(sortBy + " " + order)
+				.orderBy("foodorders.orderAt desc")
+				.findPagingList(pageSize).getPage(page);
+	}
+
 	public void generateMenuCode(Ordertype ot,long id){
 		String prefix = "MTM";
 		if(ot != null && Ordertype.AUTO_ORDER_TYPE.equals(ot.name)){

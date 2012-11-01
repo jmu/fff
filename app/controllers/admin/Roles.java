@@ -6,12 +6,12 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import secure.Secured;
+import secure.SecuredAdmin;
 import views.html.admin.role.createForm;
 import views.html.admin.role.editForm;
 import views.html.admin.role.list;
 
-@Security.Authenticated(Secured.class)
+@Security.Authenticated(SecuredAdmin.class)
 public class Roles extends Controller {
 	public static Result GO_HOME = redirect(routes.Roles.list(0, "name",
 			"asc", ""));

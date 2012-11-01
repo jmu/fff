@@ -1,0 +1,62 @@
+@(foodorderForm: Form[Foodorder])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@main(Html("Main"),nav="main") {
+<div class="content">
+			 @if(foodorderForm.hasGlobalErrors) { 
+                <p class="alert alert-error">
+                   <button class="close" data-dismiss="alert" type="button">×</button>
+                    @foodorderForm.globalError.message
+                </p>
+            }
+    @form(routes.FoodorderAction.save(), 'class -> "form-horizontal") {
+        <legend>Add a foodorder</legend>
+        <fieldset>
+           @select(
+                foodorderForm("food.id"), 
+                options(Food.options), 
+                '_label -> "Food", '_default -> "-- Choose a Food --",
+                '_showConstraints -> false
+            )
+            @inputText(foodorderForm("quantity"), '_label -> "quantity")
+            <div id="discount"></div>
+            @inputText(foodorderForm("price"), '_label -> "price")
+            @inputText(foodorderForm("comments"), '_label -> "comments")
+            <input type="hidden" name="menu.id" value="@foodorderForm("menu.id").value">
+            <input type="hidden" name="user.id" value="@foodorderForm("user.id").value">
+           
+        </fieldset>
+        <h2 id="t_total"></h2>
+        <script type="text/javascript" charset="utf-8">
+            function countTotal(){
+                var t_t = $("#quantity").val() * $("#price").val() - $("#discount").val();
+                if(isNaN(t_t)) t_t = 0;
+                $("#t_total").text("total: $" + t_t);
+            }
+            $("#quantity").change(countTotal).keyup(countTotal);
+            $("#price").change(countTotal).keyup(countTotal);
+            $("#discount").change(countTotal).keyup(countTotal);
+            countTotal();
+
+            $("#food_id").change(function(){
+               var id = $(this).val();        
+               if(isNaN(id) || id <1) return;
+               $.getJSON("/admin/foods/json/"+id,function(data){
+                   $("#price").val(data.price);
+                    $("#price").prop('readonly', !data.foodtype.freePrice);
+                    countTotal();
+               });
+               
+            });
+        </script>
+        <div class="form-actions">
+            <input type="submit" value="Create this foodorder" class="btn btn-primary"> or 
+            <a href="@routes.Projects.index()" class="btn">Cancel</a> 
+        </div>
+        
+    }
+    </div>
+}

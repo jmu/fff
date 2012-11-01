@@ -97,3 +97,11 @@ section#main .topRight {
     right: 100px;
     top: 65px;
 }
+
+.menu_box li{
+    padding: 8px;
+    border-bottom:1px solid #DDD;
+    line-height:20px;
+    margin: 0 10px 0 10px;
+    top: 5px;
+}

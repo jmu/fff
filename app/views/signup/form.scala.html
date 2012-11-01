@@ -16,6 +16,11 @@
     
 
      <legend>Account informations</legend>
+           @select(
+                signupForm("usergroup.id"), 
+                options(Usergroup.options), 
+                '_label -> "Usergroup", '_default -> "-- Choose a Usergroup --"
+            )
         @inputText(
                 signupForm("userName"), 
                 '_label -> "Username", 

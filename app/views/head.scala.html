@@ -1,4 +1,6 @@
 @(title: Html, nav: String = "", showBar: Boolean = true)(content: Html)
+
+@import models.Role
 <!DOCTYPE html>
 <html>
     <head>
@@ -32,17 +34,26 @@
               <li class="@("active".when(nav == "recharge"))">
                 <a href="#">Recharge</a>
               </li>
+              @if(session.get("userrole") == Role.ROLE_ADMIN){
 	      <li class="@("active".when(nav == "admin"))">
                 <a
-                    href="@controllers.admin.routes.Restaurants.list()">Administration</a>
+                    href="@controllers.admin.routes.Users.list()">Administration</a>
               </li>
+              }
             </ul>
             <ul class="nav pull-right">
             <li class="divider-vertical"></li>
-            	<li class=""><a href="#">@session.get("userid")</a></li>
-           
-            <li class="divider-vertical"></li>
-            	<li class=""><a href="@routes.Application.logout()">Logout</a></li>
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                @session.get(Application.USER_ID)
+             <b class="caret"></b></a>
+             <ul class="dropdown-menu">
+                 <li><a href="#">My Account</a></li>
+                <li class="divider"></li>
+                <li class=""><a href="@routes.Application.logout()">Logout</a></li>
+             </ul>
+            </li>
+
             </ul>
           </div>
         </div>

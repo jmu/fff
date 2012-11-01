@@ -9,12 +9,12 @@ import play.db.ebean.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import secure.Secured;
+import secure.SecuredAdmin;
 import views.html.admin.foodorder.createForm;
 import views.html.admin.foodorder.editForm;
 import views.html.admin.foodorder.list;
 
-@Security.Authenticated(Secured.class)
+@Security.Authenticated(SecuredAdmin.class)
 public class Foodorders extends Controller {
     public static Result GO_HOME = redirect(routes.Foodorders.list(0, "user_name",
                 "asc", ""));

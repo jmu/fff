@@ -4,21 +4,17 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
-import play.db.ebean.Model;
-import play.data.validation.Constraints.Required;
 import play.data.validation.Constraints.MaxLength;
+import play.data.validation.Constraints.Required;
+import play.db.ebean.Model;
 
 import com.avaje.ebean.Page;
 
@@ -50,6 +46,8 @@ public class Usergroup extends Model {
 	public Set<Payment> payments = new HashSet<Payment>(0);
     @OneToMany
 	public Set<Menu> menus = new HashSet<Menu>(0);
+    @ManyToMany
+    public Set<Restaurant> restaurants = new TreeSet<Restaurant>();
 
     public String validate() {
         if (isAvailable == null) {

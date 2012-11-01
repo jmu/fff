@@ -3,6 +3,7 @@ package controllers;
 import java.util.Date;
 
 import models.User;
+import models.Role;
 import models.Usergroup;
 import play.Logger;
 import play.data.Form;
@@ -68,12 +69,9 @@ public class SignUp extends Controller {
 			return badRequest(form.render(filledForm));
 		} else {
 			User created = filledForm.get();
-			Usergroup ug = new Usergroup();
-			ug.name = "testusergroup";
-			created.usergroup = ug;
-//			Role role = new Role();
-//			role.setName("testrole");
-			//created.setRole(role);
+            if (created.role == null){
+                created.role = Role.findByName(Role.ROLE_USER);
+            }
 			if(created.regAt == null){
 				created.regAt = new Date();
 			}

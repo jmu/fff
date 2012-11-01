@@ -6,12 +6,12 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import secure.Secured;
+import secure.SecuredAdmin;
 import views.html.admin.menu.createForm;
 import views.html.admin.menu.editForm;
 import views.html.admin.menu.list;
 
-@Security.Authenticated(Secured.class)
+@Security.Authenticated(SecuredAdmin.class)
 public class Menus extends Controller {
 	public static Result GO_HOME = redirect(routes.Menus.list(0, "name",
 			"asc", ""));

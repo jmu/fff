@@ -6,12 +6,12 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import secure.Secured;
+import secure.SecuredAdmin;
 import views.html.admin.user.createForm;
 import views.html.admin.user.editForm;
 import views.html.admin.user.list;
 
-@Security.Authenticated(Secured.class)
+@Security.Authenticated(SecuredAdmin.class)
 public class Users extends Controller {
     public static Result GO_HOME = redirect(routes.Users.list(0, "userName",
                 "asc", ""));

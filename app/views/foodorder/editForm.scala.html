@@ -1,0 +1,76 @@
+@(id: Long, foodorderForm: Form[Foodorder])
+
+@import helper._
+@import controllers.admin._
+@import views.html.admin._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@admin_main(Html("Foodorder"), nav = "admin", adminnav = "foodorder", showBar = true) {
+			 @if(foodorderForm.hasGlobalErrors) { 
+                <p class="alert alert-error">
+                   <button class="close" data-dismiss="alert" type="button">×</button>
+                    @foodorderForm.globalError.message
+                </p>
+            }
+    @form(routes.Foodorders.delete(id), 'class -> "pull-right") {
+        <input type="submit" value="Delete this foodorder" class="btn btn-danger">
+    }
+    @form(routes.Foodorders.update(id), 'class -> "form-horizontal") {
+        <legend>Edit foodorder</legend>
+        <fieldset>
+           @select(
+                foodorderForm("menu.id"), 
+                options(Menu.options), 
+                '_label -> "Menu", '_default -> "-- Auto create a Menu--",
+                '_showConstraints -> false
+            )
+           @select(
+                foodorderForm("user.id"), 
+                options(User.options), 
+                '_label -> "User", '_default -> "-- Choose a User --",
+                '_showConstraints -> false
+            )
+           @select(
+                foodorderForm("food.id"), 
+                options(Food.options), 
+                '_label -> "Food", '_default -> "-- Choose a Food --",
+                '_showConstraints -> false
+            )
+            @inputText(foodorderForm("quantity"), '_label -> "quantity")
+            @inputText(foodorderForm("discount"), '_label -> "discount")
+            @inputText(foodorderForm("price"), '_label -> "price")
+            @checkbox(foodorderForm("deal"), '_label -> "Deal")
+            @inputText(foodorderForm("comments"), '_label -> "comments")
+        </fieldset>
+        <h2 id="t_total"></h2>
+        <script type="text/javascript" charset="utf-8">
+            function countTotal(){
+                var t_t = 1 * $("#quantity").val() * $("#price").val() - $("#discount").val();
+                if(isNaN(t_t)) t_t = 0;
+                $("#t_total").text("total: $" + t_t);
+            }
+            $("#quantity").change(countTotal).keyup(countTotal);
+            $("#price").change(countTotal).keyup(countTotal);
+            $("#discount").change(countTotal).keyup(countTotal);
+            countTotal();
+
+            $("#food_id").change(function(){
+               var id = $(this).val();        
+               if(isNaN(id) || id <1) return;
+               $.getJSON("/admin/foods/json/"+id,function(data){
+                   $("#price").val(data.price);
+                    $("#price").prop('readonly', !data.foodtype.freePrice);
+                    countTotal();
+               });
+            });
+        </script>
+        <div class="form-actions">
+            <input type="submit" value="Save this foodorder" class="btn btn-primary"> or 
+            <a href="@routes.Foodorders.list()" class="btn">Cancel</a> 
+        </div>
+        
+    }
+    
+    
+}

@@ -58,6 +58,7 @@ create table menu (
   id                        bigint auto_increment not null,
   name                      varchar(255),
   usergroup_id              bigint,
+  date_for                  datetime,
   created_at                datetime,
   deal                      tinyint(1) default 0,
   closed_at                 datetime,
@@ -162,6 +163,12 @@ create table usergroup (
   constraint pk_usergroup primary key (id))
 ;
 
+
+create table usergroup_restaurant (
+  usergroup_id                   bigint not null,
+  restaurant_id                  bigint not null,
+  constraint pk_usergroup_restaurant primary key (usergroup_id, restaurant_id))
+;
 alter table comment add constraint fk_comment_user_1 foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_comment_user_1 on comment (user_id);
 alter table comment add constraint fk_comment_food_2 foreign key (food_id) references food (id) on delete restrict on update restrict;
@@ -201,6 +208,10 @@ create index ix_user_role_18 on user (role_id);
 
 
 
+alter table usergroup_restaurant add constraint fk_usergroup_restaurant_userg_01 foreign key (usergroup_id) references usergroup (id) on delete restrict on update restrict;
+
+alter table usergroup_restaurant add constraint fk_usergroup_restaurant_resta_02 foreign key (restaurant_id) references restaurant (id) on delete restrict on update restrict;
+
 # --- !Downs
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -232,6 +243,8 @@ drop table schedule;
 drop table user;
 
 drop table usergroup;
+
+drop table usergroup_restaurant;
 
 SET FOREIGN_KEY_CHECKS=1;
 

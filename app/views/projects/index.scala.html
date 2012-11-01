@@ -1,12 +1,64 @@
-@main(Html("Main"),nav="main") {
-	<div class="content">
-		<div class="page-header">
-			<h1>Welcome</h1>
-		</div>
-		<h2></h2>
+@(currentPage: Page[Menu])
+@import helper._
 
-		<p>
-		   this main management page
-		</p>
-	</div>
+@head(Html("Main"),nav="main") {
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span9">
+            <div class="content">
+                <div class="page-header">
+                    <h2>Today's Menu</h2>
+                </div>
+                    <ul class="thumbnails">
+                        <!--
+                        <li class="span3"><div  class="thumbnail">
+                            <h4>11sdfsdf
+                            <small>small</small></h4>
+                            <hr/>
+    
+                            <ul class="nav nav-tabs nav-stacked">
+                                <li>itedsddm</li>
+                                <li>item</li>
+                                <li>item</li>
+                            </ul>
+                            <button type="button" class="btn">Add More</button>
+                            </div>
+                        </li>
+                        -->
+                        @for(menu <- currentPage.getList) {
+                        <li class="span3"><div  class="thumbnail menu_box">
+                            <h4>@menu.name </h4>
+                                <small>@menu.createdAt.format("yyyy-MM-dd HH:mm:ss")</small>
+                            <table class="table">
+                                @for(order <-menu.foodorders){
+                                <tr>
+                                <td>@order.quantity</td>
+                                <td>x</td>
+                                <td><abbr title="@order.user.userName">@order.food.name</td>
+                                    <td>@if(order.user.email == session.get(Application.USER_ID)){
+                                        <a title="Cancel Order @order.food.name"
+                                            href="@routes.FoodorderAction.delete(order.id)"><i class="icon-remove"></i></a>
+                                        }
+                                    </td>
+                               </tr> 
+                            }
+                            <!--
+                            <tr>
+                                <td>total</td>
+                                <td></td>
+                                <td>20</td>
+                            </tr>
+                            -->
+                            </table> 
+                            <a class="btn btn-success" href="@routes.FoodorderAction.create(menu.id)">Add More</a>
+                        </div>
+                        </li>
+                        }
+                        </ul>
+           
+            </div>
+
+        </div>
+    </div>
+</div>
 }

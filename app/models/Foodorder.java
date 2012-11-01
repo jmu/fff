@@ -36,7 +36,7 @@ public class Foodorder extends Model {
     @Required
     @Min(1)
     public Long quantity;
-    public Double discount;
+    public Double discount = 0D;
     public Date orderAt;
     public Boolean deal;
     public Double price;

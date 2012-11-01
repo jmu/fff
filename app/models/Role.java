@@ -23,6 +23,10 @@ import com.avaje.ebean.Page;
 @Table(name = "role")
 public class Role extends Model {
 	private static final long serialVersionUID = -1258546785030761395L;
+    public static final String ROLE_USER = "FFF_USER";
+    public static final String ROLE_MANAGER = "FFF_MANAGER";
+    public static final String ROLE_ADMIN= "FFF_ADMIN";
+
 	@Id
 	public Long id;
 	@Required
@@ -67,6 +71,9 @@ public class Role extends Model {
 				.orderBy(sortBy + " " + order)
 				.findPagingList(pageSize).getPage(page);
 	}
+    public static Role findByName(String name) {
+        return find.where().eq("name",name).findUnique();
+    }
 	
     public static Map<String,String> options() {
         LinkedHashMap<String,String> options = new LinkedHashMap<String,String>();

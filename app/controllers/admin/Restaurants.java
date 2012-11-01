@@ -6,12 +6,12 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import secure.Secured;
+import secure.SecuredAdmin;
 import views.html.admin.restaurant.createForm;
 import views.html.admin.restaurant.editForm;
 import views.html.admin.restaurant.list;
 
-@Security.Authenticated(Secured.class)
+@Security.Authenticated(SecuredAdmin.class)
 public class Restaurants extends Controller {
 	public static Result GO_HOME = redirect(routes.Restaurants.list(0, "name",
 			"asc", ""));

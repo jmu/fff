@@ -5,12 +5,12 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import secure.Secured;
+import secure.SecuredAdmin;
 import views.html.admin.foodtype.createForm;
 import views.html.admin.foodtype.editForm;
 import views.html.admin.foodtype.list;
 
-@Security.Authenticated(Secured.class)
+@Security.Authenticated(SecuredAdmin.class)
 public class Foodtypes extends Controller {
 	public static Result GO_HOME = redirect(routes.Foodtypes.list(0, "name",
 			"asc", ""));
