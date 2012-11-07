@@ -1,8 +1,8 @@
 package models;
 
 import java.util.Date;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -79,6 +79,15 @@ public class Foodorder extends Model {
 		return find.where().ilike("user.userName", "%" + filter + "%")
 				.orderBy(sortBy + " " + order).fetch("user").fetch("menu").fetch("food").findPagingList(pageSize).getPage(page);
 	}
+
+    public static Double sumPrice(Set<Foodorder> list) {
+        Double result = 0D;
+        for(Foodorder order : list) {
+            result += order.price * order.quantity;
+        }
+        
+        return result;
+    }
 	
 
 }

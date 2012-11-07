@@ -1,0 +1,43 @@
+@(rid: Long,rests: Map[String,String],currentPage: Page[Food])
+ 
+@import helper._
+
+@head(Html("Main"),nav="food") {
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span9">
+			<div class="content">
+				<div class="page-header">
+					<h2>All Foods</h2>
+				</div>
+				<ul class="nav nav-tabs">
+                    @for(rest <- rests.keys){
+                    <li class="@if(rest.toLong == rid){active}"><a
+                        href="@routes.FoodAction.list(rest.toLong)">@rests.get(rest)</a></li>
+                    }
+				</ul>
+				<ul class="thumbnails">
+                    @currentPage.getList.zipWithIndex.map { case (food,index) =>
+					<li class="span2">
+						<div class="thumbnail">
+							<h4>@food.name <small>@if(food.foodtype != null){@food.foodtype.name}</small>
+							</h4>
+                            <h5>&yen;@food.price</h5>
+                            <hr/>
+							<a class="btn btn-success"
+								href="@routes.FoodorderAction.create(0,food.id)">Add</a>
+						</div>
+					</li>
+                    @if((index +1) % 6 == 0){
+				</ul><ul class="thumbnails">
+                }
+                    }
+				</ul>
+			</div>
+		</div>
+        <div class="span3">
+         ssdf 
+        </div>
+	</div>
+</div>
+}

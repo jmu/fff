@@ -28,7 +28,7 @@ public class Food extends Model {
 	@ManyToOne
 	public Foodtype foodtype;
 	@ManyToOne
-    @Required
+	@Required
 	public Restaurant restaurant;
 	@Required
 	@MaxLength(100)
@@ -47,12 +47,12 @@ public class Food extends Model {
 	@OneToMany
 	public Set<Schedule> schedules = new HashSet<Schedule>(0);
 
-    public String validate() {
-        if (this.isAvailable == null) {
-            this.isAvailable = false;
-        }
-        return null;
-    }
+	public String validate() {
+		if (this.isAvailable == null) {
+			this.isAvailable = false;
+		}
+		return null;
+	}
 
 	public static Finder<Long, Food> find = new Finder<Long, Food>(Long.class,
 			Food.class);
@@ -64,12 +64,18 @@ public class Food extends Model {
 				.findPagingList(pageSize).getPage(page);
 	}
 
-    public static Map<String,String> options() {
-        LinkedHashMap<String,String> options = new LinkedHashMap<String,String>();
-        for(Food c: find.where().eq("isAvailable", true)
-                .eq("restaurant.isAvailable", true).orderBy("name").findList()) {
-            options.put(c.id.toString(), c.name);
-        }
-        return options;
-    }
+	public static Page<Food> byRestaurant(int page, int pageSize,
+			String sortBy, String order, Long rid) {
+		return find.fetch("foodtype").where().eq("isAvailable", true).eq("restaurant.id",rid).orderBy(sortBy + " " + order)
+				.findPagingList(pageSize).getPage(page);
+	}
+
+	public static Map<String, String> options() {
+		LinkedHashMap<String, String> options = new LinkedHashMap<String, String>();
+		for (Food c : find.where().eq("isAvailable", true)
+				.eq("restaurant.isAvailable", true).orderBy("name").findList()) {
+			options.put(c.id.toString(), c.name);
+		}
+		return options;
+	}
 }

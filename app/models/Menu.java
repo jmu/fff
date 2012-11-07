@@ -6,6 +6,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -90,6 +93,21 @@ public class Menu extends Model {
 				.findPagingList(pageSize).getPage(page);
 	}
 
+	public static Page<Menu> today(int page, int pageSize, String sortBy,
+			String order) {
+		Date today = new Date();
+		Calendar gc= GregorianCalendar.getInstance();
+		gc.setTime(today);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		
+		today = gc.getTime();
+        
+		return afterDay(0,999,"name", "desc",today);
+	}
+
 	public void generateMenuCode(Ordertype ot,long id){
 		String prefix = "MTM";
 		if(ot != null && Ordertype.AUTO_ORDER_TYPE.equals(ot.name)){
@@ -100,7 +118,26 @@ public class Menu extends Model {
 	
     public static Map<String,String> options() {
         LinkedHashMap<String,String> options = new LinkedHashMap<String,String>();
+
         for(Menu c: find.where().ne("deal",true).orderBy("name").findList()) {
+            options.put(c.id.toString(), c.name);
+        }
+        return options;
+    }
+
+    public static Map<String,String> todayOptions() {
+        LinkedHashMap<String,String> options = new LinkedHashMap<String,String>();
+		Date today = new Date();
+		Calendar gc= GregorianCalendar.getInstance();
+		gc.setTime(today);
+		gc.set(Calendar.HOUR_OF_DAY, 0);
+		gc.set(Calendar.MINUTE, 0);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		
+		today = gc.getTime();
+        for(Menu c: find.where().eq("isAvailable", true)
+                .gt("dateFor",today).ne("deal",true).findList()) {
             options.put(c.id.toString(), c.name);
         }
         return options;

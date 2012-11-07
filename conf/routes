@@ -19,9 +19,13 @@ GET     /logout                    controllers.Application.logout()
 GET     /main                       controllers.Projects.index(p:Int ?=0,df ?="today")
 
 #Food order 
-GET     /food/order/new                controllers.FoodorderAction.create(mid:Long)
+GET     /food/order/new                controllers.FoodorderAction.create(mid:Long ?=0, fid:Long ?=0)
 POST    /food/order                    controllers.FoodorderAction.save()
 GET     /food/order/:id/delete         controllers.FoodorderAction.delete(id:Long)
+GET     /menu/togglelock               controllers.FoodorderAction.toggleLock(id:Long)
+
+#Food choose view
+GET     /food                          controllers.FoodAction.list(rid:Long ?=0)
 
 GET     /admin/restaurants            controllers.admin.Restaurants.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")
 # Add restaurant

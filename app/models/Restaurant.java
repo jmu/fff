@@ -2,9 +2,9 @@ package models;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -67,12 +67,12 @@ public class Restaurant extends Model {
 	public static Page<Restaurant> page(int page, int pageSize, String sortBy,
 			String order, String filter) {
 		return find.where().ilike("name", "%" + filter + "%")
-				.orderBy(sortBy + " " + order)//.fetch("company")
+				.orderBy(sortBy + " " + order)
 				.findPagingList(pageSize).getPage(page);
 	}
 	
     public static Map<String,String> options() {
-        LinkedHashMap<String,String> options = new LinkedHashMap<String,String>();
+        TreeMap<String,String> options = new TreeMap<String,String>();
         for(Restaurant c: find.where().eq("isAvailable", true).orderBy("name").findList()) {
             options.put(c.id.toString(), c.name);
         }

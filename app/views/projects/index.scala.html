@@ -1,64 +1,79 @@
-@(currentPage: Page[Menu])
+@(currentPage: Page[Menu]) 
+
 @import helper._
 
 @head(Html("Main"),nav="main") {
 <div class="container-fluid">
-    <div class="row-fluid">
-        <div class="span9">
-            <div class="content">
-                <div class="page-header">
-                    <h2>Today's Menu</h2>
-                </div>
-                    <ul class="thumbnails">
-                        <!--
-                        <li class="span3"><div  class="thumbnail">
-                            <h4>11sdfsdf
-                            <small>small</small></h4>
-                            <hr/>
-    
-                            <ul class="nav nav-tabs nav-stacked">
-                                <li>itedsddm</li>
-                                <li>item</li>
-                                <li>item</li>
-                            </ul>
-                            <button type="button" class="btn">Add More</button>
-                            </div>
-                        </li>
-                        -->
-                        @for(menu <- currentPage.getList) {
-                        <li class="span3"><div  class="thumbnail menu_box">
-                            <h4>@menu.name </h4>
-                                <small>@menu.createdAt.format("yyyy-MM-dd HH:mm:ss")</small>
-                            <table class="table">
-                                @for(order <-menu.foodorders){
-                                <tr>
-                                <td>@order.quantity</td>
-                                <td>x</td>
-                                <td><abbr title="@order.user.userName">@order.food.name</td>
-                                    <td>@if(order.user.email == session.get(Application.USER_ID)){
-                                        <a title="Cancel Order @order.food.name"
-                                            href="@routes.FoodorderAction.delete(order.id)"><i class="icon-remove"></i></a>
-                                        }
-                                    </td>
-                               </tr> 
-                            }
-                            <!--
+	<div class="row-fluid">
+		<div class="span9">
+			<div class="content">
+				<div class="page-header">
+					<h2>Today's Menu</h2>
+				</div>
+				<ul class="thumbnails">
+				@if(currentPage.getTotalRowCount == 0) {
+					<li class="span3"><div class="thumbnail">
+					<a class="btn btn-success"
+								href="@routes.FoodorderAction.create()">Add More</a>
+					</div></li>
+				} else {
+                    @currentPage.getList.zipWithIndex.map { case (menu,index) =>
+					<li class="span4"><div class="thumbnail menu_box">
+							<h4 class="text-info">@menu.name</h4>
+							<small class="muted">@menu.createdAt.format("yyyy-MM-dd HH:mm:ss")</small>
+                            @if(menu.deal){
+                                <span class="label label-success">Deal</span>
+                                }else{
+                                @if(!menu.isAvailable){
+                                <span class="label label-inverse">Locked</span>
+                                }}
+							<table class="table">
+								@for(order <-menu.foodorders){
+								<tr>
+									<td>@order.quantity</td>
+									<td>x</td>
+									<td><abbr
+                                            title="@order.user.userName">@{order.food.name}</abbr>
+                                        (&yen;<i id="fp">@order.food.price</i>)</td>
+									<td>
+									@if(menu.isAvailable && !menu.deal &&
+                                    !order.deal && order.user.email ==
+                                    session.get(Application.USER_ID)){
+                                    <a title="Cancel Order @order.food.name" class="close"
+										href="@routes.FoodorderAction.delete(order.id)">
+											&times;</a> }
+									</td>
+								</tr>
+								}
+                                @if(menu.foodorders.size() > 0) {
                             <tr>
-                                <td>total</td>
                                 <td></td>
-                                <td>20</td>
+                                <td>=</td>
+                                <td><strong>&yen;@Foodorder.sumPrice(menu.foodorders)</strong></td>
+                                <td></td>
                             </tr>
-                            -->
-                            </table> 
-                            <a class="btn btn-success" href="@routes.FoodorderAction.create(menu.id)">Add More</a>
-                        </div>
-                        </li>
+                            }
+                                <script type="text/javascript" charset="utf-8">
+                                    
+                                </script>
+							</table>
+                            @if(!menu.deal){
+                                @if(menu.isAvailable){ 
+                                    <a class="btn btn-success"
+                                    href="@routes.FoodorderAction.create(menu.id)">Add More</a>
+                                }
+                                <a class="btn btn-warning"
+                                    href="@routes.FoodorderAction.toggleLock(menu.id)">@if(menu.isAvailable){Lock}else{Unlock}</a>
+                                } 
+						</div></li> 
+                        @if((index+1) % 3 ==0){
+                        </ul><ul class="thumbnails">
                         }
-                        </ul>
-           
-            </div>
-
-        </div>
-    </div>
+						}
+					}
+				</ul>
+			</div>
+		</div>
+	</div>
 </div>
 }

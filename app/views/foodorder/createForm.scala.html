@@ -16,6 +16,12 @@
         <legend>Add a foodorder</legend>
         <fieldset>
            @select(
+                foodorderForm("menu.id"), 
+                options(Menu.todayOptions), 
+                '_label -> "Menu", '_default -> "-- Auto create a Menu--",
+                '_showConstraints -> false
+            )
+           @select(
                 foodorderForm("food.id"), 
                 options(Food.options), 
                 '_label -> "Food", '_default -> "-- Choose a Food --",
@@ -34,7 +40,7 @@
             function countTotal(){
                 var t_t = $("#quantity").val() * $("#price").val() - $("#discount").val();
                 if(isNaN(t_t)) t_t = 0;
-                $("#t_total").text("total: $" + t_t);
+                $("#t_total").text("total: ¥" + t_t).html();
             }
             $("#quantity").change(countTotal).keyup(countTotal);
             $("#price").change(countTotal).keyup(countTotal);
@@ -50,7 +56,7 @@
                     countTotal();
                });
                
-            });
+            }).change();
         </script>
         <div class="form-actions">
             <input type="submit" value="Create this foodorder" class="btn btn-primary"> or 
