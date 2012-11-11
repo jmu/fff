@@ -16,8 +16,8 @@ import views.html.admin.foodorder.list;
 
 @Security.Authenticated(SecuredAdmin.class)
 public class Foodorders extends Controller {
-    public static Result GO_HOME = redirect(routes.Foodorders.list(0, "user_name",
-                "asc", ""));
+    public static Result GO_HOME = redirect(routes.Foodorders.list(0, "orderAt",
+                "desc", ""));
 
     public static Result list(int page, String sortBy, String order,
             String filter) {

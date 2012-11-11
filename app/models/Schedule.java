@@ -19,7 +19,11 @@ import play.db.ebean.Model;
 @Entity
 @Table(name="schedule")
 public class Schedule extends Model {
-    private Long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long id;
     private User user;
     private Ordertype ordertype;
     private Food food;

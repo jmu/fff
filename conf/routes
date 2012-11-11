@@ -18,14 +18,25 @@ GET     /login                      controllers.Application.login()
 GET     /logout                    controllers.Application.logout()
 GET     /main                       controllers.Projects.index(p:Int ?=0,df ?="today")
 
+GET     /account                    controllers.MyAccount.edit()
+POST     /account                   controllers.MyAccount.update()
+
 #Food order 
 GET     /food/order/new                controllers.FoodorderAction.create(mid:Long ?=0, fid:Long ?=0)
 POST    /food/order                    controllers.FoodorderAction.save()
 GET     /food/order/:id/delete         controllers.FoodorderAction.delete(id:Long)
 GET     /menu/togglelock               controllers.FoodorderAction.toggleLock(id:Long)
+GET     /menu/deal                     controllers.FoodorderAction.deal(id:Long)
+
 
 #Food choose view
 GET     /food                          controllers.FoodAction.list(rid:Long ?=0)
+
+GET     /food/order/my                controllers.MyFoodorder.list(p:Int ?= 0, s ?= "orderAt", o ?= "desc", f ?= "")
+GET     /payment/my                   controllers.MyPayment.list(p:Int ?= 0, s ?= "createdAt", o ?= "desc", f ?= "")
+
+#json
+GET     /api/food/:id                  controllers.FoodAction.getFoodJson(id:Long)
 
 GET     /admin/restaurants            controllers.admin.Restaurants.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")
 # Add restaurant
@@ -58,7 +69,6 @@ POST    /admin/foods                  controllers.admin.Foods.save()
 
 # Edit existing Food
 GET     /admin/foods/:id              controllers.admin.Foods.edit(id:Long)
-GET     /admin/foods/json/:id              controllers.admin.Foods.getFoodJson(id:Long)
 POST    /admin/foods/:id              controllers.admin.Foods.update(id:Long)
 
 
@@ -101,7 +111,7 @@ POST    /admin/roles/:id              controllers.admin.Roles.update(id:Long)
 # Delete a Role
 POST    /admin/roles/:id/delete       controllers.admin.Roles.delete(id:Long)
 #--------------------
-GET     /admin/menus            controllers.admin.Menus.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")
+GET     /admin/menus            controllers.admin.Menus.list(p:Int ?= 0, s ?= "createdAt", o ?= "desc", f ?= "")
 # Add Menu
 GET     /admin/menus/new              controllers.admin.Menus.create()
 POST    /admin/menus                  controllers.admin.Menus.save()
@@ -113,7 +123,7 @@ POST    /admin/menus/:id              controllers.admin.Menus.update(id:Long)
 # Delete a Menu
 POST    /admin/menus/:id/delete       controllers.admin.Menus.delete(id:Long)
 #--------------------
-GET     /admin/foodorders            controllers.admin.Foodorders.list(p:Int ?= 0, s ?= "user_name", o ?= "asc", f ?= "")
+GET     /admin/foodorders            controllers.admin.Foodorders.list(p:Int ?= 0, s ?= "orderAt", o ?= "desc", f ?= "")
 # Add Foodorder
 GET     /admin/foodorders/new              controllers.admin.Foodorders.create()
 POST    /admin/foodorders                  controllers.admin.Foodorders.save()

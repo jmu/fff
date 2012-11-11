@@ -1,6 +1,5 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -14,27 +13,16 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
-import play.Logger;
-import play.api.libs.Codecs;
 import play.data.validation.Constraints.Email;
 import play.data.validation.Constraints.MinLength;
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 import secure.PasswordCreater;
-import buz.SimplePage;
-import buz.SimplePagingList;
-import buz.SqlResultBuilder;
 
-import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Page;
-import com.avaje.ebean.RawSql;
-import com.avaje.ebean.RawSqlBuilder;
-import com.avaje.ebean.SqlQuery;
-import com.avaje.ebean.SqlRow;
 import com.avaje.ebean.annotation.Formula;
 
 @Entity
@@ -50,8 +38,7 @@ import com.avaje.ebean.annotation.Formula;
 // "u.usergroup_id c16, u.role_id c17 " +
 // " from user as u left join  payment as p on p.user_id = u.id ")
 public class User extends Model {
-
-	private static final long serialVersionUID = -5584181079093878215L;
+	private static final long serialVersionUID = 6587720492268031227L;
 	@Id
 	public Long id;
 	@Required
@@ -88,9 +75,9 @@ public class User extends Model {
 	@ManyToOne
 	public Role role;
 
-	@OneToMany(cascade = CascadeType.MERGE)
-	@JsonIgnore
-	public Set<MenuUser> menuUsers = new HashSet<MenuUser>(0);
+//	@OneToMany(cascade = CascadeType.MERGE)
+//	@JsonIgnore
+//	public Set<MenuUser> menuUsers = new HashSet<MenuUser>(0);
 	@OneToMany(cascade = CascadeType.MERGE)
 	@JsonIgnore
 	public Set<Foodorder> foodorders = new HashSet<Foodorder>(0);

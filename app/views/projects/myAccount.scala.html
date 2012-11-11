@@ -1,0 +1,60 @@
+@(userForm: Form[User])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@main(Html("My Account"), nav = "myaccount", showBar = true) {
+    
+         <div class="content">
+                
+                <div class="page-header">
+                    <h1>Account Setting</h1>
+                </div>
+			 @if(userForm.hasGlobalErrors) { 
+                <p class="alert alert-error">
+                   <button class="close" data-dismiss="alert" type="button">×</button>
+                    @userForm.globalError.message
+                </p>
+            }
+    @helper.form(action = routes.MyAccount.update, 'class -> "form-horizontal") {
+     <legend>Account informations</legend>
+           @select(
+                userForm("usergroup.id"), 
+                options(Usergroup.options), 
+                '_label -> "Usergroup", '_default -> "-- Choose a Usergroup --"
+            )
+        @inputText(
+                userForm("userName"), 
+                '_label -> "Username", 
+                '_help -> "Please choose a valid username.",
+                '_error -> userForm.globalError
+            )
+            
+            @inputText(
+                userForm("email"), '_label -> "Email",
+                'readonly -> "readonly"
+            )
+            
+            @inputPassword(
+                userForm("password"), 
+                '_label -> "Password",
+                '_help -> "A password must be at least 6 characters. "
+            )
+            
+            @inputPassword(
+                userForm("repeatPassword"), 
+                '_label -> "Repeat password",
+                '_help -> "Please repeat your password again.",
+                '_error -> userForm.error("password")
+            )
+           
+                    <div class="form-actions">
+            <input type="submit" class="btn btn-primary" value="Update">
+            <a href="@routes.Application.index" class="btn">Cancel</a>
+            </div>
+        
+    }
+    </div>
+}

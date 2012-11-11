@@ -1,4 +1,4 @@
-@(currentPage: Page[Menu]) 
+@(currentPage: Page[Menu], cuser: User) 
 
 @import helper._
 
@@ -27,21 +27,20 @@
                                 @if(!menu.isAvailable){
                                 <span class="label label-inverse">Locked</span>
                                 }}
-							<table class="table">
+							<table class="table table-hover">
 								@for(order <-menu.foodorders){
 								<tr>
 									<td>@order.quantity</td>
 									<td>x</td>
 									<td><abbr
                                             title="@order.user.userName">@{order.food.name}</abbr>
-                                        (&yen;<i id="fp">@order.food.price</i>)</td>
+                                        (&yen;<i id="fp">@order.price</i>)</td>
 									<td>
 									@if(menu.isAvailable && !menu.deal &&
                                     !order.deal && order.user.email ==
                                     session.get(Application.USER_ID)){
                                     <a title="Cancel Order @order.food.name" class="close"
-										href="@routes.FoodorderAction.delete(order.id)">
-											&times;</a> }
+										href="@routes.FoodorderAction.delete(order.id)">&times;</a> }
 									</td>
 								</tr>
 								}
@@ -59,12 +58,20 @@
 							</table>
                             @if(!menu.deal){
                                 @if(menu.isAvailable){ 
-                                    <a class="btn btn-success"
-                                    href="@routes.FoodorderAction.create(menu.id)">Add More</a>
+                                    <a class="btn btn-primary"
+                                        href="@routes.FoodorderAction.create(menu.id)"><i
+                                            class="icon-plus icon-white"></i> Add More</a>
                                 }
+                                  @if(session.get(Application.USER_ROLE) == Role.ROLE_ADMIN ||
+                                  session.get(Application.USER_ROLE)== Role.ROLE_MANAGER){
                                 <a class="btn btn-warning"
-                                    href="@routes.FoodorderAction.toggleLock(menu.id)">@if(menu.isAvailable){Lock}else{Unlock}</a>
+                                    href="@routes.FoodorderAction.toggleLock(menu.id)">
+                                    <i class="icon-lock icon-white"></i> @if(menu.isAvailable){Lock}else{Unlock}</a>
+                                <a class="btn btn-success"
+                                    href="@routes.FoodorderAction.deal(menu.id)">
+                                    <i class="icon-ok icon-white"></i> Deal</a>
                                 } 
+                                }
 						</div></li> 
                         @if((index+1) % 3 ==0){
                         </ul><ul class="thumbnails">
@@ -74,6 +81,9 @@
 				</ul>
 			</div>
 		</div>
+        <div class="span3">
+            @sider(cuser)
+        </div>
 	</div>
 </div>
 }

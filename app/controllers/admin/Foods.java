@@ -1,12 +1,7 @@
 package controllers.admin;
 
 import models.Food;
-
-import org.codehaus.jackson.JsonNode;
-
-import play.Logger;
 import play.data.Form;
-import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -69,16 +64,5 @@ public class Foods extends Controller {
 		return GO_HOME;
 	}
 	
-	public static Result getFoodJson(Long id) {
-		Food food = Food.find.ref(id);
-		JsonNode json = null;
-		try {
-			json = Json.toJson(food);
-		} catch (Exception e) {
-			Logger.error("get Food by Id" + id, e);
-			return badRequest();
-		}
-		return ok(json);
-	}
 
 }

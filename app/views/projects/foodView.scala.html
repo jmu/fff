@@ -1,8 +1,8 @@
-@(rid: Long,rests: Map[String,String],currentPage: Page[Food])
+@(rid: Long,rests: Map[String,String],currentPage: Page[Food], cuser: User)
  
 @import helper._
 
-@head(Html("Main"),nav="food") {
+@head(Html("Food"),nav="food") {
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span9">
@@ -11,7 +11,7 @@
 					<h2>All Foods</h2>
 				</div>
 				<ul class="nav nav-tabs">
-                    @for(rest <- rests.keys){
+                    @for(rest <- rests.keysIterator){
                     <li class="@if(rest.toLong == rid){active}"><a
                         href="@routes.FoodAction.list(rest.toLong)">@rests.get(rest)</a></li>
                     }
@@ -36,7 +36,7 @@
 			</div>
 		</div>
         <div class="span3">
-         ssdf 
+            @sider(cuser)
         </div>
 	</div>
 </div>

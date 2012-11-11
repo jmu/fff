@@ -21,7 +21,8 @@ import com.avaje.ebean.Page;
 @Entity
 @Table(name = "usergroup")
 public class Usergroup extends Model {
-    @Id
+	private static final long serialVersionUID = -5201055236564990850L;
+	@Id
 	public Long id;
     @Required
     @MaxLength(100)

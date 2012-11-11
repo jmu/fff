@@ -1,12 +1,13 @@
 package controllers;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
 
+import models.Food;
 import models.Foodorder;
 import models.Menu;
 import models.User;
-import models.Food;
 import play.Logger;
 import play.data.Form;
 import play.db.ebean.Transactional;
@@ -19,6 +20,7 @@ import views.html.foodorder.editForm;
 
 @Security.Authenticated(Secured.class)
 public class FoodorderAction extends Controller {
+	private static SimpleDateFormat sdf = new SimpleDateFormat("ddHHmm");
 	public static Result GO_HOME = redirect(routes.Application.login());
 
 	public static Result create(Long menuId, Long foodId) {
@@ -27,10 +29,10 @@ public class FoodorderAction extends Controller {
 		menu.id = menuId;
 		fo.menu = menu;
 		fo.user = User.findByEmail(session(Application.USER_ID));
-        Food food = new Food();
-        food.id = foodId;
-        fo.food = food; 
-        fo.quantity = 1L;
+		Food food = new Food();
+		food.id = foodId;
+		fo.food = food;
+		fo.quantity = 1L;
 		Form<Foodorder> foodForm = form(Foodorder.class).fill(fo);
 		return ok(createForm.render(foodForm));
 	}
@@ -42,7 +44,7 @@ public class FoodorderAction extends Controller {
 			return badRequest(createForm.render(foodorderForm));
 		}
 		User user = User.findByEmail(session(Application.USER_ID));
-		Date createAt = new Date();
+		final Date createAt = new Date();
 		Foodorder r = foodorderForm.get();
 		if (user == null || user.id != r.user.id) {
 			Logger.error("bad user request");
@@ -50,15 +52,15 @@ public class FoodorderAction extends Controller {
 		}
 		if (r.menu != null && (r.menu.id == null || r.menu.id < 1)) {
 			Menu menu = new Menu();
-			//menu.generateMenuCode(null, 2);
-			menu.name = "Menu by " + user.userName;
-            int count = 1;
-            Map<String,String> menuOptions = Menu.todayOptions(); 
-            while(menuOptions.containsValue(menu.name+count)){
-            	count++;
-            }
-			
-            menu.name = menu.name + count;
+			// menu.generateMenuCode(null, 2);
+			menu.name = user.userName + " Menu"+ sdf.format(createAt);
+//			int count = 1;
+//			Map<String, String> menuOptions = Menu.todayOptions();
+//			while (menuOptions.containsValue(menu.name + count)) {
+//				count++;
+//			}
+//
+//			menu.name = menu.name + count;
 			menu.createdAt = createAt;
 			menu.dateFor = createAt;
 			menu.isAvailable = true;
@@ -96,12 +98,30 @@ public class FoodorderAction extends Controller {
 
 	public static Result toggleLock(Long id) {
 		Menu menu = Menu.find.ref(id);
-        if (menu == null) {
-            return badRequest();
-        }
-        menu.isAvailable = !menu.isAvailable;
-        menu.save();
+		if (menu == null) {
+			return badRequest();
+		}
+		menu.isAvailable = !menu.isAvailable;
+		menu.save();
 		flash("success", "Menu has been updated");
+		return GO_HOME;
+	}
+
+	@Transactional
+	public static Result deal(Long menuid) {
+		Menu menu = Menu.find.byId(menuid);
+		if (menu == null) {
+			return badRequest();
+		}
+		List<Foodorder> orderList = Foodorder.getAllFoodorders(menuid);
+		for (Foodorder order : orderList) {
+			order.deal = true;
+			order.update();
+		}
+		menu.deal = true;
+		menu.closedAt = new Date();
+		menu.update();
+		flash("success", "Menu has been change to dealed");
 		return GO_HOME;
 	}
 }

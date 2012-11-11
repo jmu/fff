@@ -1,9 +1,9 @@
-@(currentPage: Page[Payment], currentSortBy: String, currentOrder: String, currentFilter: String)
+@(currentPage: Page[Foodorder], currentSortBy: String, currentOrder: String, currentFilter: String, cuser: User)
 
 @import helper._
 @import helper.twitterBootstrap._
-@import controllers.admin._
-@import views.html.admin._
+@import controllers._
+@import views.html.projects._
 
 @****************************************
 * Helper generating navigation links    *
@@ -27,7 +27,7 @@
     }
     
     // Generate the link
-    routes.Payments.list(newPage, sortBy, order, currentFilter)
+    routes.MyFoodorder.list(newPage, sortBy, order, currentFilter)
     
 }
 
@@ -40,9 +40,15 @@
     </th>
 }
 
-@admin_main(Html("Payment"), nav = "admin",adminnav = "payment", showBar = true) {
-    
-    <!-- <h1 id="homeTitle">@Messages("payments.list.title", currentPage.getTotalRowCount)</h1> -->
+@head(Html("My Record"),nav="myorder") {
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span9">
+			<div class="content">
+				<div class="page-header">
+					<h2>My Orders</h2>
+				</div>
+				   <!-- <h1 id="homeTitle">@Messages("foodorders.list.title", currentPage.getTotalRowCount)</h1> -->
 
     @if(flash.containsKey("success")) {
         <div class="alert alert-success">
@@ -50,15 +56,8 @@
             <strong>Done!</strong> @flash.get("success")
         </div>
     } 
-
-    <div id="form-actions">
-        
-        <form class="form-inline" action="@link(0, "user_name")" method="GET">
-            <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by payment name...">
-            <input type="submit" id="searchsubmit" value="Filter by name" class="btn btn-primary">
-        
-        <a class="btn btn-success pull-right" id="add" href="@routes.Payments.create()">Add a new payment</a>
-        </form>
+    <div id="stat">
+        <h4>Total Cost <b class="text-error">&yen; @Foodorder.countCost(cuser.id)</b></h4>
     </div>
     
     @if(currentPage.getTotalRowCount == 0) {
@@ -69,47 +68,66 @@
         
     } else {
         
-        <table class="payments table table-bordered table-striped table-hover">
+        <table class="foodorders table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    @header("id", "Id")
-                    @header("user.userName", "Payment User name")
-                    @header("amount", "Amount")
-                    @header("createdAt","createdAt")
-                    @header("description","description")
-
+                    @header("id", "ID")
+                    @header("menu.name", "Menu name")
+                    @header("food.name", "Food name")
+                    <!--
+                    @header("quantity", "quantity")
+                    @header("discount", "Discount")
+                    @header("price", "Price")
+                    -->
+                    <th class="header">
+                         <a href="#">Total</a>
+                    </th>
+                    @header("deal", "Deal")
+                    @header("orderAt", "Order At")
                 </tr>
             </thead>
             <tbody>
 
-                @for(payment <- currentPage.getList) {
+                @for(foodorder <- currentPage.getList) {
                     <tr>
-                        <td><a
-                                href="@routes.Payments.edit(payment.id)">@payment.id</a></td>
+                        <td>@foodorder.id
                         <td>
-                            @if(payment.user == null) {
-                                <em>-</em>
-                            } else {
-                                @payment.user.userName
-                            }
-                        </td>
-                        <td>
-                            @payment.amount
-                        </td>
-                        <td>
-                            @if(payment.createdAt != null) {
-                                @payment.createdAt.format("yyyy-MM-dd HH:mm:ss")
-                                } else {
-                                <em>-<em>
-                                        }
-
+                            @if(foodorder.menu != null){
+                            @foodorder.menu.name
+                              }else{
+                              <em>-</em>
+                              }
                         </td>
                           <td>
-                            @if(payment.description == null) {
+                            @if(foodorder.food.name == null) {
                                 <em>-</em>
                             } else {
-                                @payment.description
+                                @foodorder.food.name
                             }
+                        </td>
+                        <!--
+                        <td>
+                            @foodorder.quantity
+                        </td>
+                        <td>
+                            @foodorder.discount
+                        </td>
+                        <td>
+                            @foodorder.price
+                        </td>
+                        -->
+                        <td>
+                            @foodorder.quantity X @foodorder.price
+                            @if(foodorder.discount > 0) { - @foodorder.discount} 
+                            @if(foodorder.discount < 0) @{ "+" + " " + Math.abs(foodorder.discount)}
+                            = <strong>$@{foodorder.quantity * foodorder.price -
+                                foodorder.discount}</strong>
+                        </td>
+                        <td>
+                        	@foodorder.deal
+                        </td>
+                        <td>
+                            @foodorder.orderAt.format("yyyy-MM-dd HH:mm:ss")
                         </td>
                     </tr>
                 }
@@ -144,7 +162,15 @@
         </div>
         
     }
+			</div>
+		</div>
+        <div class="span3">
+            @sider(cuser)
+        </div>
+	</div>
+</div>
+}    
+ 
         
-}
 
             

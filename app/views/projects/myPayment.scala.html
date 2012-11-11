@@ -1,9 +1,10 @@
-@(currentPage: Page[Payment], currentSortBy: String, currentOrder: String, currentFilter: String)
+@(currentPage: Page[Payment], currentSortBy: String, currentOrder: String,
+currentFilter: String, cuser:User)
 
 @import helper._
 @import helper.twitterBootstrap._
-@import controllers.admin._
-@import views.html.admin._
+@import controllers._
+@import views.html._
 
 @****************************************
 * Helper generating navigation links    *
@@ -27,7 +28,7 @@
     }
     
     // Generate the link
-    routes.Payments.list(newPage, sortBy, order, currentFilter)
+    routes.MyPayment.list(newPage, sortBy, order, currentFilter)
     
 }
 
@@ -40,8 +41,15 @@
     </th>
 }
 
-@admin_main(Html("Payment"), nav = "admin",adminnav = "payment", showBar = true) {
-    
+@head(Html("My Payment"),nav="mypayment") {
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span9">
+			<div class="content">
+				<div class="page-header">
+					<h2>My Payment</h2>
+				</div>
+
     <!-- <h1 id="homeTitle">@Messages("payments.list.title", currentPage.getTotalRowCount)</h1> -->
 
     @if(flash.containsKey("success")) {
@@ -51,14 +59,8 @@
         </div>
     } 
 
-    <div id="form-actions">
-        
-        <form class="form-inline" action="@link(0, "user_name")" method="GET">
-            <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by payment name...">
-            <input type="submit" id="searchsubmit" value="Filter by name" class="btn btn-primary">
-        
-        <a class="btn btn-success pull-right" id="add" href="@routes.Payments.create()">Add a new payment</a>
-        </form>
+    <div id="stat">
+        <h4>Total Pay: <b class="text-success">&yen; @Payment.countPaied(cuser.id)</b></h4>
     </div>
     
     @if(currentPage.getTotalRowCount == 0) {
@@ -73,7 +75,6 @@
             <thead>
                 <tr>
                     @header("id", "Id")
-                    @header("user.userName", "Payment User name")
                     @header("amount", "Amount")
                     @header("createdAt","createdAt")
                     @header("description","description")
@@ -84,15 +85,8 @@
 
                 @for(payment <- currentPage.getList) {
                     <tr>
-                        <td><a
-                                href="@routes.Payments.edit(payment.id)">@payment.id</a></td>
                         <td>
-                            @if(payment.user == null) {
-                                <em>-</em>
-                            } else {
-                                @payment.user.userName
-                            }
-                        </td>
+                           @payment.id</td>
                         <td>
                             @payment.amount
                         </td>
@@ -144,7 +138,12 @@
         </div>
         
     }
-        
-}
-
+			</div>
+		</div>
+        <div class="span3">
+            @sider(cuser)
+        </div>
+	</div>
+</div>
+}    
             

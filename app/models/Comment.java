@@ -15,6 +15,10 @@ import play.db.ebean.Model;
 @Entity
 @Table(name = "comment")
 public class Comment extends Model {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	private User user;
 	private Food food;

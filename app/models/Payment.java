@@ -1,32 +1,27 @@
 package models;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import play.db.ebean.Model;
 import play.data.validation.Constraints.Required;
+import play.db.ebean.Model;
 
+import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Page;
+import com.avaje.ebean.SqlQuery;
 
 @Entity
 @Table(name = "payment")
 public class Payment extends Model {
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8607251774394592803L;
+	@Id
 	public Long id;
     @ManyToOne
 	public User user;
@@ -61,4 +56,16 @@ public class Payment extends Model {
 				.orderBy(sortBy + " " + order).fetch("user").findPagingList(pageSize).getPage(page);
 	}
 
+	public static Page<Payment> myPage(int page, int pageSize, String sortBy,
+			String order, Long userId) {
+		return find.where().eq("user.id",userId) 
+				.orderBy(sortBy + " " + order).findPagingList(pageSize).getPage(page);
+	}
+	
+	public static Double countPaied(Long userId) {
+		String sql = "SELECT ifnull(sum(amount),0) total_pay FROM payment where user_id = :userId";
+		SqlQuery query = Ebean.createSqlQuery(sql);
+		return query.setParameter("userId", userId).findUnique()
+				.getDouble("total_pay");
+	}
 }

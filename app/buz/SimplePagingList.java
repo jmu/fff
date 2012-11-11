@@ -15,7 +15,7 @@ public class SimplePagingList<T> implements PagingList<T> {
 	private final int pageSize;
 	private final String sql;
 	private List<T> list;
-	private boolean fetchAhead = true;
+	//private boolean fetchAhead = true;
 	private SqlResultBuilder<T> builder;
 	private SqlResultCounter countSql = new DefaultSqlResultCounter();
 	private int pageIndex = 0;
@@ -31,7 +31,7 @@ public class SimplePagingList<T> implements PagingList<T> {
 
 	public List<T> getAsList() {
 		String pageSql = sql;
-		int limit = (pageIndex + 1) * pageSize;
+		//int limit = (pageIndex + 1) * pageSize;
 //		int total = getTotalRowCount();
 //		Logger.debug("total -->"+ total);
 		pageSql += " limit " + pageSize;
@@ -86,7 +86,7 @@ public class SimplePagingList<T> implements PagingList<T> {
 	}
 
 	public PagingList<T> setFetchAhead(boolean fetchAhead) {
-		this.fetchAhead = fetchAhead;
+//		this.fetchAhead = fetchAhead;
 		return this;
 	}
 

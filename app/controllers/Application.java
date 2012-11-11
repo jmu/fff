@@ -14,8 +14,9 @@ public class Application extends Controller {
 
 	public static final String USER_ID = "userid";
 	public static final String USER_ROLE = "userrole";
-	private static final String USER_GROUP_ID = "usergroupid";
-	private static final String USER_GROUP_NAME = "usergroupname";
+	public static final String USER_GROUP_ID = "usergroupid";
+	public static final String USER_GROUP_NAME = "usergroupname";
+	public static final String USER_KEY_ID = "userkeyid";
 
 	public static Result index() {
 		return redirect(routes.Application.login());
@@ -57,6 +58,7 @@ public class Application extends Controller {
 				roleName = role.name;
 			}
 			session(USER_ID, userid);
+			session(USER_KEY_ID, user.id.toString());
 			session(USER_ROLE, roleName);
 			Logger.info(userid + " is Login.");
 			return redirect(routes.Projects.index(0, ""));

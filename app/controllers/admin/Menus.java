@@ -13,8 +13,8 @@ import views.html.admin.menu.list;
 
 @Security.Authenticated(SecuredAdmin.class)
 public class Menus extends Controller {
-	public static Result GO_HOME = redirect(routes.Menus.list(0, "name",
-			"asc", ""));
+	public static Result GO_HOME = redirect(routes.Menus.list(0, "createdAt",
+			"desc", ""));
 
 
 	public static Result list(int page, String sortBy, String order,

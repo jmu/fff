@@ -66,13 +66,6 @@ create table menu (
   constraint pk_menu primary key (id))
 ;
 
-create table menu_user (
-  id                        bigint auto_increment not null,
-  user_id                   bigint,
-  menu_id                   bigint,
-  constraint pk_menu_user primary key (id))
-;
-
 create table ordertype (
   id                        bigint auto_increment not null,
   name                      varchar(255),
@@ -187,24 +180,20 @@ alter table foodorder add constraint fk_foodorder_food_8 foreign key (food_id) r
 create index ix_foodorder_food_8 on foodorder (food_id);
 alter table menu add constraint fk_menu_usergroup_9 foreign key (usergroup_id) references usergroup (id) on delete restrict on update restrict;
 create index ix_menu_usergroup_9 on menu (usergroup_id);
-alter table menu_user add constraint fk_menu_user_user_10 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_menu_user_user_10 on menu_user (user_id);
-alter table menu_user add constraint fk_menu_user_menu_11 foreign key (menu_id) references menu (id) on delete restrict on update restrict;
-create index ix_menu_user_menu_11 on menu_user (menu_id);
-alter table payment add constraint fk_payment_user_12 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_payment_user_12 on payment (user_id);
-alter table payment add constraint fk_payment_usergroup_13 foreign key (usergroup_id) references usergroup (id) on delete restrict on update restrict;
-create index ix_payment_usergroup_13 on payment (usergroup_id);
-alter table schedule add constraint fk_schedule_user_14 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_schedule_user_14 on schedule (user_id);
-alter table schedule add constraint fk_schedule_ordertype_15 foreign key (ordertype_id) references ordertype (id) on delete restrict on update restrict;
-create index ix_schedule_ordertype_15 on schedule (ordertype_id);
-alter table schedule add constraint fk_schedule_food_16 foreign key (food_id) references food (id) on delete restrict on update restrict;
-create index ix_schedule_food_16 on schedule (food_id);
-alter table user add constraint fk_user_usergroup_17 foreign key (usergroup_id) references usergroup (id) on delete restrict on update restrict;
-create index ix_user_usergroup_17 on user (usergroup_id);
-alter table user add constraint fk_user_role_18 foreign key (role_id) references role (id) on delete restrict on update restrict;
-create index ix_user_role_18 on user (role_id);
+alter table payment add constraint fk_payment_user_10 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_payment_user_10 on payment (user_id);
+alter table payment add constraint fk_payment_usergroup_11 foreign key (usergroup_id) references usergroup (id) on delete restrict on update restrict;
+create index ix_payment_usergroup_11 on payment (usergroup_id);
+alter table schedule add constraint fk_schedule_user_12 foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_schedule_user_12 on schedule (user_id);
+alter table schedule add constraint fk_schedule_ordertype_13 foreign key (ordertype_id) references ordertype (id) on delete restrict on update restrict;
+create index ix_schedule_ordertype_13 on schedule (ordertype_id);
+alter table schedule add constraint fk_schedule_food_14 foreign key (food_id) references food (id) on delete restrict on update restrict;
+create index ix_schedule_food_14 on schedule (food_id);
+alter table user add constraint fk_user_usergroup_15 foreign key (usergroup_id) references usergroup (id) on delete restrict on update restrict;
+create index ix_user_usergroup_15 on user (usergroup_id);
+alter table user add constraint fk_user_role_16 foreign key (role_id) references role (id) on delete restrict on update restrict;
+create index ix_user_role_16 on user (role_id);
 
 
 
@@ -227,8 +216,6 @@ drop table foodorder;
 drop table foodtype;
 
 drop table menu;
-
-drop table menu_user;
 
 drop table ordertype;
 

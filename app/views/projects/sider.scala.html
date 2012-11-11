@@ -1,0 +1,52 @@
+@(cuser: User)
+
+@defining(Foodorder.todayByUser(cuser.id)){ myorders =>
+			<div class="sidebar">
+                <div class="pull-left">
+                    <a class="avatar avatar-80"><img type="image/png" src="@routes.Assets.at("img/avator-default.png")"></img></a>
+                </div>
+                    <h4>@cuser.userName</h4>
+                    @defining(Foodorder.sumFreeze(myorders)){ freezedMoney =>
+                    <a href="@routes.MyPayment.list()"><h4
+                            @if(cuser.money-freezedMoney>0){@if(cuser.money-freezedMoney>15){class="text-success"}else{class="text-warning"}}else{class="text-error"}>&yen;@(cuser.money-freezedMoney)
+                            @if(freezedMoney>0){<small>(<i
+                                    class="icon-lock"></i>@Foodorder.sumFreeze(myorders))</small>}</h4>
+                    </a>
+                    }
+                    <div class="clearfix">
+                    </div>
+                        <hr/>
+                    <div>
+                        <h5>My Orders Today</h5>
+                        @if(myorders.size == 0) {
+                          <div class="well">
+                            <em>Nothing to display</em>
+                        </div>
+                        } else {
+							<table class="table well">
+                            @for(myorder <- myorders) {
+								<tr>
+									<td>@myorder.quantity</td>
+									<td>x</td>
+									<td>@myorder.food.name
+                                        (&yen;<i id="fp">@myorder.price</i>)</td>
+									<td>
+									@if(myorder.menu.isAvailable && !myorder.menu.deal &&
+                                    !myorder.deal){
+                                    <a title="Cancel Order @myorder.food.name" class="close"
+										href="@routes.FoodorderAction.delete(myorder.id)">
+											&times;</a> }
+                            @if(myorder.menu.deal){
+                                <span class="label label-success">Deal</span>
+                                }else{
+                                @if(!myorder.menu.isAvailable){
+                                <span class="label label-inverse">Locked</span>
+                                }}
+									</td>
+								</tr>
+                            }
+                        </table>
+                        }
+                   </div>
+            </div>
+}

@@ -22,7 +22,8 @@ import com.avaje.ebean.Page;
 @Entity
 @Table(name="foodtype")
 public class Foodtype extends Model {
-    @Id
+	private static final long serialVersionUID = 9120429003744689257L;
+	@Id
     public Long id;
     @Required
     @MaxLength(100)
