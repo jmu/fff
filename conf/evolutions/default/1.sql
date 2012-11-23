@@ -3,14 +3,6 @@
 
 # --- !Ups
 
-create table address (
-  address                   varchar(150),
-  city                      varchar(50),
-  province                  varchar(100),
-  country                   varchar(100),
-  postal_code               varchar(15))
-;
-
 create table comment (
   id                        bigint auto_increment not null,
   user_id                   bigint,
@@ -204,8 +196,6 @@ alter table usergroup_restaurant add constraint fk_usergroup_restaurant_resta_02
 # --- !Downs
 
 SET FOREIGN_KEY_CHECKS=0;
-
-drop table address;
 
 drop table comment;
 

@@ -46,7 +46,7 @@ public class FoodorderAction extends Controller {
 		User user = User.findByEmail(session(Application.USER_ID));
 		final Date createAt = new Date();
 		Foodorder r = foodorderForm.get();
-		if (user == null || user.id != r.user.id) {
+		if (user == null || !user.id.equals(r.user.id)) {
 			Logger.error("bad user request");
 			return badRequest(createForm.render(foodorderForm));
 		}
