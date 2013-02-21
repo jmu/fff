@@ -22,13 +22,13 @@ public class Usergroups extends Controller {
 	}
 
 	public static Result edit(Long id) {
-		Form<Usergroup> usergroupForm = form(Usergroup.class).fill(
+		Form<Usergroup> usergroupForm = new Form(Usergroup.class).fill(
 				Usergroup.find.byId(id));
 		return ok(editForm.render(id, usergroupForm));
 	}
 
 	public static Result update(Long id) {
-		Form<Usergroup> usergroupForm = form(Usergroup.class)
+		Form<Usergroup> usergroupForm = new Form(Usergroup.class)
 				.bindFromRequest();
 		if (usergroupForm.hasErrors()) {
 			return badRequest(editForm.render(id, usergroupForm));
@@ -40,12 +40,12 @@ public class Usergroups extends Controller {
 	}
 
 	public static Result create() {
-		Form<Usergroup> usergroupForm = form(Usergroup.class);
+		Form<Usergroup> usergroupForm = new Form(Usergroup.class);
 		return ok(createForm.render(usergroupForm));
 	}
 
 	public static Result save() {
-		Form<Usergroup> usergroupForm = form(Usergroup.class)
+		Form<Usergroup> usergroupForm = new Form(Usergroup.class)
 				.bindFromRequest();
 		if (usergroupForm.hasErrors()) {
 			return badRequest(createForm.render(usergroupForm));

@@ -23,13 +23,13 @@ public class Restaurants extends Controller {
 	}
 
 	public static Result edit(Long id) {
-		Form<Restaurant> restaurantForm = form(Restaurant.class).fill(
+		Form<Restaurant> restaurantForm = new Form(Restaurant.class).fill(
 				Restaurant.find.byId(id));
 		return ok(editForm.render(id, restaurantForm));
 	}
 
 	public static Result update(Long id) {
-		Form<Restaurant> restaurantForm = form(Restaurant.class)
+		Form<Restaurant> restaurantForm = new Form(Restaurant.class)
 				.bindFromRequest();
 		if (restaurantForm.hasErrors()) {
 			return badRequest(editForm.render(id, restaurantForm));
@@ -45,12 +45,12 @@ public class Restaurants extends Controller {
 	}
 
 	public static Result create() {
-		Form<Restaurant> restaurantForm = form(Restaurant.class);
+		Form<Restaurant> restaurantForm = new Form(Restaurant.class);
 		return ok(createForm.render(restaurantForm));
 	}
 
 	public static Result save() {
-		Form<Restaurant> restaurantForm = form(Restaurant.class)
+		Form<Restaurant> restaurantForm = new Form(Restaurant.class)
 				.bindFromRequest();
 		if (restaurantForm.hasErrors()) {
 			return badRequest(createForm.render(restaurantForm));

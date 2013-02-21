@@ -24,13 +24,13 @@ public class Menus extends Controller {
 	}
 
 	public static Result edit(Long id) {
-		Form<Menu> menuForm = form(Menu.class).fill(
+		Form<Menu> menuForm = new Form(Menu.class).fill(
 				Menu.find.byId(id));
 		return ok(editForm.render(id, menuForm));
 	}
 
 	public static Result update(Long id) {
-		Form<Menu> menuForm = form(Menu.class)
+		Form<Menu> menuForm = new Form(Menu.class)
 				.bindFromRequest();
 		if (menuForm.hasErrors()) {
 			return badRequest(editForm.render(id, menuForm));
@@ -51,12 +51,12 @@ public class Menus extends Controller {
 	}
 
 	public static Result create() {
-		Form<Menu> menuForm = form(Menu.class);
+		Form<Menu> menuForm = new Form(Menu.class);
 		return ok(createForm.render(menuForm));
 	}
 
 	public static Result save() {
-		Form<Menu> menuForm = form(Menu.class)
+		Form<Menu> menuForm = new Form(Menu.class)
 				.bindFromRequest();
 		if (menuForm.hasErrors()) {
 			return badRequest(createForm.render(menuForm));

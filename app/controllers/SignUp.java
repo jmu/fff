@@ -15,7 +15,7 @@ public class SignUp extends Controller {
 	/**
 	 * Defines a form wrapping the User class.
 	 */
-	final static Form<User> signupForm = form(User.class);
+	final static Form<User> signupForm = new Form(User.class);
 
 	/**
 	 * Display a blank form.

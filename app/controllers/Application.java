@@ -27,7 +27,7 @@ public class Application extends Controller {
 		if (session().containsKey(USER_ID)) {
 			return redirect(routes.Projects.index(0, ""));
 		}
-		return ok(login.render(form(Login.class)));
+		return ok(login.render(new Form(Login.class)));
 	}
 
 	public static Result logout() {
@@ -40,7 +40,7 @@ public class Application extends Controller {
 	 * Handle login form submission.
 	 */
 	public static Result authenticate() {
-		Form<Login> loginForm = form(Login.class).bindFromRequest();
+		Form<Login> loginForm = new Form(Login.class).bindFromRequest();
 		if (loginForm.hasErrors()) {
 			Logger.error(loginForm.errors().toString());
 			return badRequest(login.render(loginForm));

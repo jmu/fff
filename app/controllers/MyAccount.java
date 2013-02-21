@@ -10,7 +10,7 @@ public class MyAccount extends Controller{
 
 
     public static Result edit() {
-        Form<User> userForm = form(User.class).fill(
+        Form<User> userForm = new Form(User.class).fill(
                 User.findById.byId(Long.valueOf(session(Application.USER_KEY_ID))));
         //clean the sha1 password
         userForm.get().password = null;
@@ -18,7 +18,7 @@ public class MyAccount extends Controller{
     }
 
     public static Result update() {
-        Form<User> userForm = form(User.class)
+        Form<User> userForm = new Form(User.class)
             .bindFromRequest();
 		if (!userForm.field("password").valueOr("").isEmpty()) {
 			if (!userForm.field("password").valueOr("")

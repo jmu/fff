@@ -189,9 +189,9 @@ create index ix_user_role_16 on user (role_id);
 
 
 
-alter table usergroup_restaurant add constraint fk_usergroup_restaurant_userg_01 foreign key (usergroup_id) references usergroup (id) on delete restrict on update restrict;
+alter table usergroup_restaurant add constraint fk_usergroup_restaurant_usergroup_01 foreign key (usergroup_id) references usergroup (id) on delete restrict on update restrict;
 
-alter table usergroup_restaurant add constraint fk_usergroup_restaurant_resta_02 foreign key (restaurant_id) references restaurant (id) on delete restrict on update restrict;
+alter table usergroup_restaurant add constraint fk_usergroup_restaurant_restaurant_02 foreign key (restaurant_id) references restaurant (id) on delete restrict on update restrict;
 
 # --- !Downs
 

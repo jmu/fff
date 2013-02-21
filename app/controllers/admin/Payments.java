@@ -23,13 +23,13 @@ public class Payments extends Controller {
 	}
 
 	public static Result edit(Long id) {
-		Form<Payment> paymentForm = form(Payment.class).fill(
+		Form<Payment> paymentForm = new Form(Payment.class).fill(
 				Payment.find.byId(id));
 		return ok(editForm.render(id, paymentForm));
 	}
 
 	public static Result update(Long id) {
-		Form<Payment> paymentForm = form(Payment.class)
+		Form<Payment> paymentForm = new Form(Payment.class)
 				.bindFromRequest();
         if(!paymentForm.hasErrors()) {
             if(paymentForm.get().user.id == null) {
@@ -46,12 +46,12 @@ public class Payments extends Controller {
 	}
 
 	public static Result create() {
-		Form<Payment> paymentForm = form(Payment.class);
+		Form<Payment> paymentForm = new Form(Payment.class);
 		return ok(createForm.render(paymentForm));
 	}
 
 	public static Result save() {
-		Form<Payment> paymentForm = form(Payment.class)
+		Form<Payment> paymentForm = new Form(Payment.class)
 				.bindFromRequest();
         if(!paymentForm.hasErrors()) {
             if(paymentForm.get().user.id == null) {

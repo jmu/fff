@@ -22,13 +22,13 @@ public class Foods extends Controller {
 	}
 
 	public static Result edit(Long id) {
-		Form<Food> foodForm = form(Food.class).fill(
+		Form<Food> foodForm = new Form(Food.class).fill(
 				Food.find.byId(id));
 		return ok(editForm.render(id, foodForm));
 	}
 
 	public static Result update(Long id) {
-		Form<Food> foodForm = form(Food.class)
+		Form<Food> foodForm = new Form(Food.class)
 				.bindFromRequest();
 		if (foodForm.hasErrors()) {
 			return badRequest(editForm.render(id, foodForm));
@@ -41,12 +41,12 @@ public class Foods extends Controller {
 	}
 
 	public static Result create() {
-		Form<Food> foodForm = form(Food.class);
+		Form<Food> foodForm = new Form(Food.class);
 		return ok(createForm.render(foodForm));
 	}
 
 	public static Result save() {
-		Form<Food> foodForm = form(Food.class)
+		Form<Food> foodForm = new Form(Food.class)
 				.bindFromRequest();
 		if (foodForm.hasErrors()) {
 			return badRequest(createForm.render(foodForm));

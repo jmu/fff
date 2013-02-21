@@ -23,13 +23,13 @@ public class Roles extends Controller {
 	}
 
 	public static Result edit(Long id) {
-		Form<Role> roleForm = form(Role.class).fill(
+		Form<Role> roleForm = new Form(Role.class).fill(
 				Role.find.byId(id));
 		return ok(editForm.render(id, roleForm));
 	}
 
 	public static Result update(Long id) {
-		Form<Role> roleForm = form(Role.class)
+		Form<Role> roleForm = new Form(Role.class)
 				.bindFromRequest();
 		if (roleForm.hasErrors()) {
 			return badRequest(editForm.render(id, roleForm));
@@ -41,12 +41,12 @@ public class Roles extends Controller {
 	}
 
 	public static Result create() {
-		Form<Role> roleForm = form(Role.class);
+		Form<Role> roleForm = new Form(Role.class);
 		return ok(createForm.render(roleForm));
 	}
 
 	public static Result save() {
-		Form<Role> roleForm = form(Role.class)
+		Form<Role> roleForm = new Form(Role.class)
 				.bindFromRequest();
 		if (roleForm.hasErrors()) {
 			return badRequest(createForm.render(roleForm));

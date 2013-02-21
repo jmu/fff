@@ -24,7 +24,7 @@ public class Users extends Controller {
     }
 
     public static Result edit(Long id) {
-        Form<User> userForm = form(User.class).fill(
+        Form<User> userForm = new Form(User.class).fill(
                 User.findById.byId(id));
         //clean the sha1 password
         userForm.get().password = null;
@@ -32,7 +32,7 @@ public class Users extends Controller {
     }
 
     public static Result update(Long id) {
-        Form<User> userForm = form(User.class)
+        Form<User> userForm = new Form(User.class)
             .bindFromRequest();
         if(!userForm.hasErrors()) {
             if(userForm.get().role.id == null) {
@@ -52,12 +52,12 @@ public class Users extends Controller {
     }
 
     public static Result create() {
-        Form<User> userForm = form(User.class);
+        Form<User> userForm = new Form(User.class);
         return ok(createForm.render(userForm));
     }
 
     public static Result save() {
-        Form<User> userForm = form(User.class)
+        Form<User> userForm = new Form(User.class)
             .bindFromRequest();
         if(!userForm.hasErrors()) {
             if(userForm.get().role.id == null) {

@@ -33,13 +33,13 @@ public class FoodorderAction extends Controller {
 		food.id = foodId;
 		fo.food = food;
 		fo.quantity = 1L;
-		Form<Foodorder> foodForm = form(Foodorder.class).fill(fo);
+		Form<Foodorder> foodForm = new Form(Foodorder.class).fill(fo);
 		return ok(createForm.render(foodForm));
 	}
 
 	@Transactional
 	public static Result save() {
-		Form<Foodorder> foodorderForm = form(Foodorder.class).bindFromRequest();
+		Form<Foodorder> foodorderForm = new Form(Foodorder.class).bindFromRequest();
 		if (foodorderForm.hasErrors()) {
 			return badRequest(createForm.render(foodorderForm));
 		}
@@ -75,13 +75,13 @@ public class FoodorderAction extends Controller {
 	}
 
 	public static Result edit(Long id) {
-		Form<Foodorder> foodorderForm = form(Foodorder.class).fill(
+		Form<Foodorder> foodorderForm = new Form(Foodorder.class).fill(
 				Foodorder.find.byId(id));
 		return ok(editForm.render(id, foodorderForm));
 	}
 
 	public static Result update(Long id) {
-		Form<Foodorder> foodorderForm = form(Foodorder.class).bindFromRequest();
+		Form<Foodorder> foodorderForm = new Form(Foodorder.class).bindFromRequest();
 		if (foodorderForm.hasErrors()) {
 			return badRequest(editForm.render(id, foodorderForm));
 		}
